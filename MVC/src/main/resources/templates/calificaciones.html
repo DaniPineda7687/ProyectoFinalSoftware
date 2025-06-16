@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Calificaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/config.js"></script>
+</head>
+<body class="container py-5">
+    <h1 class="mb-4">Gestión de Calificaciones</h1>
+
+    <!-- Pestañas de navegación -->
+    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="estudiantes-tab" data-bs-toggle="tab" data-bs-target="#estudiantes" type="button" role="tab">Estudiantes</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab">Cursos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="matriculas-tab" data-bs-toggle="tab" data-bs-target="#matriculas" type="button" role="tab">Matrículas</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="notas-tab" data-bs-toggle="tab" data-bs-target="#notas" type="button" role="tab">Consulta de Notas</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <!-- Pestaña de Estudiantes -->
+        <div class="tab-pane fade show active" id="estudiantes" role="tabpanel">
+            <button class="btn btn-outline-primary mb-3" id="listarEstudiantes">Listar Estudiantes</button>
+            <table class="table" id="tablaEstudiantes">
+                <thead>
+                    <tr><th>ID</th><th>Nombre</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h4 class="mt-4">Crear Estudiante</h4>
+            <form id="formEstudiante" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Guardar Estudiante</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pestaña de Cursos -->
+        <div class="tab-pane fade" id="cursos" role="tabpanel">
+            <button class="btn btn-outline-primary mb-3" id="listarCursos">Listar Cursos</button>
+            <table class="table" id="tablaCursos">
+                <thead>
+                    <tr><th>ID</th><th>Nombre</th><th>Tipo de Calificación</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h4 class="mt-4">Crear Curso</h4>
+            <form id="formCurso" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre del Curso</label>
+                    <input type="text" class="form-control" id="nombreCurso">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tipo de Calificación</label>
+                    <select class="form-control" id="tipoCurso">
+                        <option value="CUANTITATIVA">Cuantitativa (Numérica)</option>
+                        <option value="CUALITATIVA">Cualitativa (Texto)</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Guardar Curso</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pestaña de Matrículas -->
+        <div class="tab-pane fade" id="matriculas" role="tabpanel">
+            <h4 class="mb-3">Registrar Matrícula</h4>
+            <form id="formMatricula" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Estudiante</label>
+                    <select class="form-control" id="selectEstudiante"></select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Curso</label>
+                    <select class="form-control" id="selectCurso"></select>
+                </div>
+                <div class="col-md-6 calificacionNumerica">
+                    <label class="form-label">Calificación Numérica</label>
+                    <input type="number" step="0.1" min="0" max="5" class="form-control" id="notaNumerica">
+                </div>
+                <div class="col-md-6 calificacionTextual" style="display:none">
+                    <label class="form-label">Calificación Textual</label>
+                    <select class="form-control" id="notaTextual">
+                        <option value="APROBO">Aprobó</option>
+                        <option value="REPROBO">Reprobó</option>
+                        <option value="PENDIENTE">Pendiente</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Registrar Matrícula</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pestaña de Consulta de Notas -->
+        <div class="tab-pane fade" id="notas" role="tabpanel">
+            <div class="mb-3 row">
+                <div class="col-md-6">
+                    <label class="form-label">Seleccione un Curso</label>
+                    <select class="form-control" id="selectCursoNotas"></select>
+                </div>
+                <div class="col-md-6 align-self-end">
+                    <button class="btn btn-outline-primary" id="consultarNotas">Consultar Notas</button>
+                </div>
+            </div>
+            <table class="table" id="tablaNotas">
+                <thead>
+                    <tr><th>ID</th><th>Estudiante</th><th>Curso</th><th>Calificación</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    $(function(){
+        // GESTIÓN DE ESTUDIANTES
+        $('#listarEstudiantes').click(function(){
+            $.get(apiConfig.students.base, function(data){
+                var tbody = $('#tablaEstudiantes tbody');
+                tbody.empty();
+                data.forEach(function(est){
+                    var row = '<tr><td>'+est.id+'</td><td>'+est.name+'</td></tr>';
+                    tbody.append(row);
+                });
+
+                // Actualizar el select de estudiantes al mismo tiempo
+                actualizarSelectEstudiantes(data);
+            });
+        });
+
+        $('#formEstudiante').submit(function(e){
+            e.preventDefault();
+            var estudiante = { name: $('#nombre').val() };
+            if(!estudiante.name) {
+                alert('Por favor ingrese el nombre del estudiante');
+                return;
+            }
+
+            $.ajax({
+                url: apiConfig.students.base,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(estudiante),
+                success: function(){
+                    alert('Estudiante creado con éxito');
+                    $('#nombre').val('');
+                    $('#listarEstudiantes').click();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error al crear el estudiante: ' + error);
+                }
+            });
+        });
+
+        // GESTIÓN DE CURSOS
+        $('#listarCursos').click(function(){
+            $.get(apiConfig.courses.base, function(data){
+                var tbody = $('#tablaCursos tbody');
+                tbody.empty();
+                data.forEach(function(curso){
+                    var tipoCalificacion = curso.gradeType === 'CUANTITATIVA' ? 'Numérica' : 'Textual';
+                    var row = '<tr><td>'+curso.id+'</td><td>'+curso.name+'</td><td>'+tipoCalificacion+'</td></tr>';
+                    tbody.append(row);
+                });
+
+                // Actualizar el select de cursos al mismo tiempo
+                actualizarSelectCursos(data);
+            });
+        });
+
+        $('#formCurso').submit(function(e){
+            e.preventDefault();
+            var curso = {
+                name: $('#nombreCurso').val(),
+                gradeType: $('#tipoCurso').val()
+            };
+            if(!curso.name) {
+                alert('Por favor ingrese el nombre del curso');
+                return;
+            }
+
+            $.ajax({
+                url: apiConfig.courses.base,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(curso),
+                success: function(){
+                    alert('Curso creado con éxito');
+                    $('#nombreCurso').val('');
+                    $('#listarCursos').click();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error al crear el curso: ' + error);
+                }
+            });
+        });
+
+        // GESTIÓN DE MATRÍCULAS
+        // Actualizar campos de calificación según el tipo de curso seleccionado
+        $('#selectCurso').change(function(){
+            var cursoId = $(this).val();
+            if(!cursoId) return;
+
+            $.get(apiConfig.courses.base, function(cursos){
+                var cursoSeleccionado = cursos.find(c => c.id == cursoId);
+                if(cursoSeleccionado) {
+                    if(cursoSeleccionado.gradeType === 'CUANTITATIVA') {
+                        $('.calificacionNumerica').show();
+                        $('.calificacionTextual').hide();
+                    } else {
+                        $('.calificacionNumerica').hide();
+                        $('.calificacionTextual').show();
+                    }
+                }
+            });
+        });
+
+        $('#formMatricula').submit(function(e){
+            e.preventDefault();
+            var estudianteId = $('#selectEstudiante').val();
+            var cursoId = $('#selectCurso').val();
+
+            if(!estudianteId || !cursoId) {
+                alert('Por favor seleccione un estudiante y un curso');
+                return;
+            }
+
+            // Obtener los objetos completos
+            $.get(apiConfig.students.base, function(estudiantes){
+                var estudianteSeleccionado = estudiantes.find(e => e.id == estudianteId);
+
+                $.get(apiConfig.courses.base, function(cursos){
+                    var cursoSeleccionado = cursos.find(c => c.id == cursoId);
+
+                    // Crear el objeto de matrícula
+                    var matricula = {
+                        student: estudianteSeleccionado,
+                        course: cursoSeleccionado
+                    };
+
+                    // Agregar la calificación según el tipo de curso
+                    if(cursoSeleccionado.gradeType === 'CUANTITATIVA') {
+                        matricula.gradeNumeric = parseFloat($('#notaNumerica').val());
+                    } else {
+                        matricula.gradeText = $('#notaTextual').val();
+                    }
+
+                    // Enviar la solicitud de matrícula
+                    $.ajax({
+                        url: apiConfig.enrollments.base,
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(matricula),
+                        success: function(){
+                            alert('Matrícula registrada con éxito');
+                            $('#formMatricula')[0].reset();
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error al registrar la matrícula: ' + error);
+                        }
+                    });
+                });
+            });
+        });
+
+        // CONSULTA DE NOTAS
+        $('#consultarNotas').click(function(){
+            var cursoId = $('#selectCursoNotas').val();
+            if(!cursoId) {
+                alert('Por favor seleccione un curso');
+                return;
+            }
+
+            $.get(apiConfig.courses.enrollments(cursoId), function(matriculas){
+                var tbody = $('#tablaNotas tbody');
+                tbody.empty();
+
+                matriculas.forEach(function(matricula){
+                    var calificacion = matricula.course.gradeType === 'CUANTITATIVA' ?
+                        matricula.gradeNumeric : matricula.gradeText;
+
+                    var row = '<tr><td>'+matricula.id+'</td><td>'+matricula.student.name+'</td><td>'+
+                            matricula.course.name+'</td><td>'+calificacion+'</td></tr>';
+                    tbody.append(row);
+                });
+            });
+        });
+
+        // Funciones auxiliares para actualizar los selects
+        function actualizarSelectEstudiantes(estudiantes) {
+            var select = $('#selectEstudiante');
+            select.empty();
+            select.append('<option value="">Seleccione un estudiante</option>');
+
+            estudiantes.forEach(function(est){
+                select.append('<option value="'+est.id+'">'+est.name+'</option>');
+            });
+        }
+
+        function actualizarSelectCursos(cursos) {
+            // Actualizar select en la pestaña de matrículas
+            var select = $('#selectCurso');
+            select.empty();
+            select.append('<option value="">Seleccione un curso</option>');
+
+            cursos.forEach(function(curso){
+                select.append('<option value="'+curso.id+'">'+curso.name+'</option>');
+            });
+
+            // Actualizar select en la pestaña de consulta de notas
+            var selectNotas = $('#selectCursoNotas');
+            selectNotas.empty();
+            selectNotas.append('<option value="">Seleccione un curso</option>');
+
+            cursos.forEach(function(curso){
+                selectNotas.append('<option value="'+curso.id+'">'+curso.name+'</option>');
+            });
+        }
+
+        // Inicialización: Cargar listas al inicio
+        $('#listarEstudiantes').click();
+        $('#listarCursos').click();
+    });
+    </script>
+</body>
+</html>

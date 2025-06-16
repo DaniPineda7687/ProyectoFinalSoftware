@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión Biblioteca</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/js/config.js"></script>
+</head>
+<body class="container py-5">
+    <h1 class="mb-4">Gestión de Biblioteca</h1>
+
+    <!-- Pestañas de navegación -->
+    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="libros-tab" data-bs-toggle="tab" data-bs-target="#libros" type="button" role="tab">Libros</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="prestamos-tab" data-bs-toggle="tab" data-bs-target="#prestamos" type="button" role="tab">Préstamos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="reportes-tab" data-bs-toggle="tab" data-bs-target="#reportes" type="button" role="tab">Reportes</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <!-- Pestaña Libros -->
+        <div class="tab-pane fade show active" id="libros" role="tabpanel">
+            <div class="d-flex justify-content-between mb-3">
+                <button class="btn btn-outline-primary" id="listar">Listar Libros</button>
+                <div class="input-group w-50">
+                    <input type="number" class="form-control" id="libro-id" placeholder="ID del libro">
+                    <button class="btn btn-outline-secondary" id="buscar-libro">Buscar</button>
+                    <button class="btn btn-outline-danger" id="eliminar-libro">Eliminar</button>
+                </div>
+            </div>
+
+            <table class="table" id="tablaLibros">
+                <thead>
+                    <tr><th>ID</th><th>Titulo</th><th>Autor</th><th>Disponible</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h4 class="mt-4">Crear Libro</h4>
+            <form id="formLibro" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Titulo</label>
+                    <input type="text" class="form-control" id="titulo">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="autor">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pestaña Usuarios -->
+        <div class="tab-pane fade" id="usuarios" role="tabpanel">
+            <div class="d-flex justify-content-between mb-3">
+                <button class="btn btn-outline-primary" id="listar-usuarios">Listar Usuarios</button>
+                <div class="input-group w-50">
+                    <input type="number" class="form-control" id="usuario-id" placeholder="ID del usuario">
+                    <button class="btn btn-outline-secondary" id="buscar-usuario">Buscar</button>
+                    <button class="btn btn-outline-danger" id="eliminar-usuario">Eliminar</button>
+                </div>
+            </div>
+
+            <table class="table" id="tablaUsuarios">
+                <thead>
+                    <tr><th>ID</th><th>Nombre</th><th>Rol</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h4 class="mt-4">Crear Usuario</h4>
+            <form id="formUsuario" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre-usuario">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Rol</label>
+                    <select class="form-control" id="rol-usuario">
+                        <option value="DOCENTE">Docente</option>
+                        <option value="ESTUDIANTE">Estudiante</option>
+                        <option value="EMPLEADO">Empleado</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pestaña Préstamos -->
+        <div class="tab-pane fade" id="prestamos" role="tabpanel">
+            <button class="btn btn-outline-primary mb-3" id="listar-prestamos">Listar Préstamos</button>
+
+            <table class="table" id="tablaPrestamos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Libro</th>
+                        <th>Fecha Préstamo</th>
+                        <th>Fecha Entrega</th>
+                        <th>Fecha Devolución</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h4 class="mt-4">Solicitar Préstamo</h4>
+            <form id="formPrestamo" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">ID Usuario</label>
+                    <input type="number" class="form-control" id="prestamo-usuario-id">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">ID Libro</label>
+                    <input type="number" class="form-control" id="prestamo-libro-id">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Fecha Entrega</label>
+                    <input type="date" class="form-control" id="prestamo-fecha-entrega">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Solicitar Préstamo</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pestaña Reportes -->
+        <div class="tab-pane fade" id="reportes" role="tabpanel">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <button class="btn btn-outline-primary w-100" id="reporte-usuarios">Reporte Usuarios</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-primary w-100" id="reporte-multas">Reporte Multas</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-primary w-100" id="reporte-libros">Reporte Libros</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-primary w-100" id="reporte-libros-prestados">Reporte Libros Prestados</button>
+                </div>
+            </div>
+
+            <div id="reporte-resultado">
+                <h4 class="mb-3">Resultado del Reporte</h4>
+                <div id="reporte-contenido"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    $(function(){
+        // GESTIÓN DE LIBROS
+        $('#listar').click(function(){
+            $.get(apiConfig.libros.base, function(data){
+                var tbody = $('#tablaLibros tbody');
+                tbody.empty();
+                data.forEach(function(libro){
+                    var row = '<tr><td>'+libro.id+'</td><td>'+libro.titulo+'</td><td>'+libro.autor+'</td><td>'+libro.disponible+'</td></tr>';
+                    tbody.append(row);
+                });
+            });
+        });
+
+        $('#formLibro').submit(function(e){
+            e.preventDefault();
+            var libro = { titulo: $('#titulo').val(), autor: $('#autor').val(), disponible: true };
+            $.ajax({
+                url: apiConfig.libros.base,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(libro),
+                success: function(){
+                    alert('Libro creado con éxito');
+                    $('#listar').click();
+                    $('#formLibro')[0].reset();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error al crear el libro: ' + error);
+                }
+            });
+        });
+
+        $('#buscar-libro').click(function(){
+            var id = $('#libro-id').val();
+            if(!id) {
+                alert('Por favor, ingrese el ID del libro');
+                return;
+            }
+
+            $.get(apiConfig.libros.obtenerPorId(id), function(libro){
+                var tbody = $('#tablaLibros tbody');
+                tbody.empty();
+                var row = '<tr><td>'+libro.id+'</td><td>'+libro.titulo+'</td><td>'+libro.autor+'</td><td>'+libro.disponible+'</td></tr>';
+                tbody.append(row);
+            }).fail(function(){
+                alert('No se encontró el libro con ID: ' + id);
+            });
+        });
+
+        $('#eliminar-libro').click(function(){
+            var id = $('#libro-id').val();
+            if(!id) {
+                alert('Por favor, ingrese el ID del libro');
+                return;
+            }
+
+            if(confirm('¿Está seguro de eliminar el libro con ID: ' + id + '?')) {
+                $.ajax({
+                    url: apiConfig.libros.eliminar(id),
+                    method: 'DELETE',
+                    success: function(){
+                        alert('Libro eliminado con éxito');
+                        $('#listar').click();
+                    },
+                    error: function(){
+                        alert('Error al eliminar el libro');
+                    }
+                });
+            }
+        });
+
+        // GESTIÓN DE USUARIOS
+        $('#listar-usuarios').click(function(){
+            $.get(apiConfig.usuarios.base, function(data){
+                var tbody = $('#tablaUsuarios tbody');
+                tbody.empty();
+                data.forEach(function(usuario){
+                    var row = '<tr><td>'+usuario.id+'</td><td>'+usuario.nombre+'</td><td>'+usuario.rol+'</td></tr>';
+                    tbody.append(row);
+                });
+            });
+        });
+
+        $('#formUsuario').submit(function(e){
+            e.preventDefault();
+            var usuario = {
+                nombre: $('#nombre-usuario').val(),
+                rol: $('#rol-usuario').val()
+            };
+
+            $.ajax({
+                url: apiConfig.usuarios.base,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(usuario),
+                success: function(){
+                    alert('Usuario creado con éxito');
+                    $('#listar-usuarios').click();
+                    $('#formUsuario')[0].reset();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error al crear el usuario: ' + error);
+                }
+            });
+        });
+
+        $('#buscar-usuario').click(function(){
+            var id = $('#usuario-id').val();
+            if(!id) {
+                alert('Por favor, ingrese el ID del usuario');
+                return;
+            }
+
+            $.get(apiConfig.usuarios.obtenerPorId(id), function(usuario){
+                var tbody = $('#tablaUsuarios tbody');
+                tbody.empty();
+                var row = '<tr><td>'+usuario.id+'</td><td>'+usuario.nombre+'</td><td>'+usuario.rol+'</td></tr>';
+                tbody.append(row);
+            }).fail(function(){
+                alert('No se encontró el usuario con ID: ' + id);
+            });
+        });
+
+        $('#eliminar-usuario').click(function(){
+            var id = $('#usuario-id').val();
+            if(!id) {
+                alert('Por favor, ingrese el ID del usuario');
+                return;
+            }
+
+            if(confirm('¿Está seguro de eliminar el usuario con ID: ' + id + '?')) {
+                $.ajax({
+                    url: apiConfig.usuarios.eliminar(id),
+                    method: 'DELETE',
+                    success: function(){
+                        alert('Usuario eliminado con éxito');
+                        $('#listar-usuarios').click();
+                    },
+                    error: function(){
+                        alert('Error al eliminar el usuario');
+                    }
+                });
+            }
+        });
+
+        // GESTIÓN DE PRÉSTAMOS
+        $('#listar-prestamos').click(function(){
+            $.get(apiConfig.prestamos.base, function(data){
+                var tbody = $('#tablaPrestamos tbody');
+                tbody.empty();
+                data.forEach(function(prestamo){
+                    var fechaDevolucion = prestamo.fechaDevolucion ? prestamo.fechaDevolucion : 'Pendiente';
+                    var accion = prestamo.fechaDevolucion ? '' :
+                        '<button class="btn btn-sm btn-success devolver-libro" data-id="'+prestamo.id+'">Devolver</button>';
+
+                    var row = '<tr><td>'+prestamo.id+'</td><td>'+prestamo.usuario.nombre+'</td><td>'+
+                              prestamo.libro.titulo+'</td><td>'+prestamo.fechaPrestamo+'</td><td>'+
+                              prestamo.fechaEntrega+'</td><td>'+fechaDevolucion+'</td><td>'+accion+'</td></tr>';
+                    tbody.append(row);
+                });
+
+                // Evento para botones de devolución dinámicos
+                $('.devolver-libro').click(function(){
+                    var prestamoId = $(this).data('id');
+                    devolverLibro(prestamoId);
+                });
+            });
+        });
+
+        $('#formPrestamo').submit(function(e){
+            e.preventDefault();
+            var solicitud = {
+                usuarioId: $('#prestamo-usuario-id').val(),
+                libroId: $('#prestamo-libro-id').val(),
+                fechaEntrega: $('#prestamo-fecha-entrega').val()
+            };
+
+            $.ajax({
+                url: apiConfig.prestamos.solicitar,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(solicitud),
+                success: function(response){
+                    alert('Préstamo realizado con éxito');
+                    $('#listar-prestamos').click();
+                    $('#formPrestamo')[0].reset();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error al solicitar el préstamo: ' + error);
+                }
+            });
+        });
+
+        function devolverLibro(prestamoId) {
+            if(confirm('¿Confirmar la devolución del préstamo #' + prestamoId + '?')) {
+                $.ajax({
+                    url: apiConfig.prestamos.devolver(prestamoId),
+                    method: 'POST',
+                    success: function(){
+                        alert('Libro devuelto con éxito');
+                        $('#listar-prestamos').click();
+                    },
+                    error: function(){
+                        alert('Error al devolver el libro');
+                    }
+                });
+            }
+        }
+
+        // GESTIÓN DE REPORTES
+        $('#reporte-usuarios').click(function(){
+            $.get(apiConfig.reportes.usuarios, function(data){
+                mostrarTablaUsuarios(data, 'Reporte de Usuarios');
+            });
+        });
+
+        $('#reporte-multas').click(function(){
+            $.get(apiConfig.reportes.multas, function(data){
+                mostrarTablaMultas(data, 'Reporte de Multas');
+            });
+        });
+
+        $('#reporte-libros').click(function(){
+            $.get(apiConfig.reportes.libros, function(data){
+                mostrarTablaLibros(data, 'Reporte de Libros');
+            });
+        });
+
+        $('#reporte-libros-prestados').click(function(){
+            $.get(apiConfig.reportes.librosPrestados, function(data){
+                mostrarTablaLibros(data, 'Reporte de Libros Prestados');
+            });
+        });
+
+        function mostrarTablaUsuarios(data, titulo) {
+            var html = '<h5>' + titulo + '</h5><table class="table"><thead><tr><th>ID</th><th>Nombre</th><th>Rol</th></tr></thead><tbody>';
+
+            data.forEach(function(usuario){
+                html += '<tr><td>' + usuario.id + '</td><td>' + usuario.nombre + '</td><td>' + usuario.rol + '</td></tr>';
+            });
+
+            html += '</tbody></table>';
+            $('#reporte-contenido').html(html);
+        }
+
+        function mostrarTablaLibros(data, titulo) {
+            var html = '<h5>' + titulo + '</h5><table class="table"><thead><tr><th>ID</th><th>Título</th><th>Autor</th><th>Disponible</th></tr></thead><tbody>';
+
+            data.forEach(function(libro){
+                html += '<tr><td>' + libro.id + '</td><td>' + libro.titulo + '</td><td>' + libro.autor + '</td><td>' + libro.disponible + '</td></tr>';
+            });
+
+            html += '</tbody></table>';
+            $('#reporte-contenido').html(html);
+        }
+
+        function mostrarTablaMultas(data, titulo) {
+            var html = '<h5>' + titulo + '</h5><table class="table"><thead><tr><th>ID</th><th>Días Retraso</th><th>Monto</th><th>Préstamo ID</th><th>Usuario</th><th>Libro</th></tr></thead><tbody>';
+
+            data.forEach(function(multa){
+                html += '<tr><td>' + multa.id + '</td><td>' + multa.diasRetraso + '</td><td>' + multa.monto + '</td>' +
+                        '<td>' + multa.prestamo.id + '</td><td>' + multa.prestamo.usuario.nombre + '</td><td>' + multa.prestamo.libro.titulo + '</td></tr>';
+            });
+
+            html += '</tbody></table>';
+            $('#reporte-contenido').html(html);
+        }
+
+        // Inicialización: cargar listado de libros al inicio
+        $('#listar').click();
+    });
+    </script>
+</body>
+</html>
