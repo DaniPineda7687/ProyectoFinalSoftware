@@ -1,0 +1,26 @@
+services:
+  servicio-libros:
+    build:
+      context: ./ServicioLibros
+      dockerfile: Dockerfile
+    container_name: servicio-libros
+    ports:
+      - "8082:8082"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  servicio-calificaciones:
+    build:
+      context: ./ServicioGestionCalificaciones
+      dockerfile: Dockerfile
+    container_name: servicio-calificaciones
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
