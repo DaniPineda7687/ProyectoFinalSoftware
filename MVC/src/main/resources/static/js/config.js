@@ -1,47 +1,52 @@
 // Archivo de configuración para URLs de APIs
+// Detecta si está en Docker o en desarrollo local
+const isDocker = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+const baseLibros = isDocker ? 'http://localhost:8082' : 'http://localhost:8082';
+const baseCalificaciones = isDocker ? 'http://localhost:8081' : 'http://localhost:8081';
+
 const apiConfig = {
     // URLs de API para estudiantes
     students: {
-        base: 'http://localhost:8081/api/students'
+        base: `${baseCalificaciones}/api/students`
     },
 
     // URLs de API para libros
     libros: {
-        base: 'http://localhost:8082/api/libros',
+        base: `${baseLibros}/api/libros`,
         obtenerPorId: function(id) { return `${this.base}/${id}`; },
         eliminar: function(id) { return `${this.base}/${id}`; }
     },
 
     // URLs de API para usuarios
     usuarios: {
-        base: 'http://localhost:8082/api/usuarios',
+        base: `${baseLibros}/api/usuarios`,
         obtenerPorId: function(id) { return `${this.base}/${id}`; },
         eliminar: function(id) { return `${this.base}/${id}`; }
     },
 
     // URLs de API para préstamos
     prestamos: {
-        base: 'http://localhost:8082/api/prestamos',
-        solicitar: 'http://localhost:8082/api/prestamos/solicitar',
-        devolver: function(prestamoId) { return `http://localhost:8082/api/prestamos/devolver/${prestamoId}`; }
+        base: `${baseLibros}/api/prestamos`,
+        solicitar: `${baseLibros}/api/prestamos/solicitar`,
+        devolver: function(prestamoId) { return `${baseLibros}/api/prestamos/devolver/${prestamoId}`; }
     },
 
     // URLs de API para reportes
     reportes: {
-        usuarios: 'http://localhost:8082/api/reportes/usuarios',
-        multas: 'http://localhost:8082/api/reportes/multas',
-        libros: 'http://localhost:8082/api/reportes/libros',
-        librosPrestados: 'http://localhost:8082/api/reportes/libros-prestados'
+        usuarios: `${baseLibros}/api/reportes/usuarios`,
+        multas: `${baseLibros}/api/reportes/multas`,
+        libros: `${baseLibros}/api/reportes/libros`,
+        librosPrestados: `${baseLibros}/api/reportes/libros-prestados`
     },
 
     // URLs de API para cursos
     courses: {
-        base: 'http://localhost:8081/api/courses',
-        enrollments: function(courseId) { return `http://localhost:8081/api/courses/${courseId}/enrollments`; }
+        base: `${baseCalificaciones}/api/courses`,
+        enrollments: function(courseId) { return `${baseCalificaciones}/api/courses/${courseId}/enrollments`; }
     },
 
     // URLs de API para matrículas
     enrollments: {
-        base: 'http://localhost:8081/api/enrollments'
+        base: `${baseCalificaciones}/api/enrollments`
     }
 };

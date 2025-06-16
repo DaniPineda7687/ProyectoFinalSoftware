@@ -21,6 +21,20 @@ services:
       - app-network
     restart: unless-stopped
 
+  mvc-frontend:
+    build:
+      context: ./MVC
+      dockerfile: Dockerfile
+    container_name: mvc-frontend
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - servicio-libros
+      - servicio-calificaciones
+    restart: unless-stopped
+
 networks:
   app-network:
     driver: bridge
