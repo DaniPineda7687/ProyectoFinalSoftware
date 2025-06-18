@@ -1,0 +1,37 @@
+# ======================
+#  Build / IDE / OS
+# ======================
+
+# Maven output
+/target/
+
+# IntelliJ IDEA
+/.idea/
+/*.iml
+/*.iws
+/out/
+
+# VS Code
+/.vscode/
+
+# Logs
+**/logs/
+/*.log
+hs_err_pid*.log
+
+# ======================
+#  Java Specific
+# ======================
+*.class
+*.jar
+*.war
+*.ear
+
+# ======================
+#  OS generated
+# ======================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini

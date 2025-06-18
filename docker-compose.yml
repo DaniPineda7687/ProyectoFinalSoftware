@@ -21,6 +21,17 @@ services:
       - app-network
     restart: unless-stopped
 
+  scientific-calculations:
+    build:
+      context: ./ScientificCalculations
+      dockerfile: Dockerfile
+    container_name: scientific-calculations
+    ports:
+      - "8083:8083"
+    networks:
+      - app-network
+    restart: unless-stopped
+
   mvc-frontend:
     build:
       context: ./MVC
@@ -33,6 +44,7 @@ services:
     depends_on:
       - servicio-libros
       - servicio-calificaciones
+      - scientific-calculations
     restart: unless-stopped
 
 networks:
