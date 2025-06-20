@@ -1,99 +1,455 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Cálculos Científicos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculos Científicos - Sistema Académico</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/animations.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script th:src="@{/js/config.js}"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/app-utils.js"></script>
 </head>
+<body>
+    <div class="main-container">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-modern fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" href="/">
+                    <i class="fas fa-graduation-cap me-2"></i>
+                    Sistema Académico
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/libros">
+                                <i class="fas fa-book me-1"></i>Libros
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/calificaciones">
+                                <i class="fas fa-chart-line me-1"></i>Calificaciones
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/cientifico">
+                                <i class="fas fa-calculator me-1"></i>Científico
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-<body class="container py-5">
-    <h1 class="mb-4">Cálculos Científicos</h1>
-
-    <!-- Enlace de regreso -->
-    <div class="mb-4">
-        <a href="/" class="btn btn-outline-secondary">← Volver al Menú Principal</a>
-    </div>
-
-    <!-- Saludo del servicio -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Estado del Servicio</h5>
+        <!-- Header -->
+        <div class="app-header">
+            <div class="nav-breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Cálculos Científicos</li>
+                    </ol>
+                </nav>
+            </div>
+            <h1 class="app-title">
+                <i class="fas fa-calculator me-3"></i>
+                Cálculos Científicos
+            </h1>
+            <p class="app-subtitle">Herramientas avanzadas de computación paralela y matemática</p>
         </div>
-        <div class="card-body">
-            <button id="btnSaludo" class="btn btn-info">Verificar Servicio</button>
-            <div id="saludoResult" class="mt-2"></div>
-        </div>
-    </div>
 
-    <!-- Multiplicación de Matrices -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Multiplicación de Matrices Paralela</h5>
-        </div>
-        <div class="card-body">
-            <form id="matrixForm">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="matrixA" class="form-label">Matriz A (JSON)</label>
-                        <textarea class="form-control" id="matrixA" rows="4"
-                            placeholder="Ejemplo: [[1, 2], [3, 4]]">[ [1, 2], [3, 4] ]</textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="matrixB" class="form-label">Matriz B (JSON)</label>
-                        <textarea class="form-control" id="matrixB" rows="4"
-                            placeholder="Ejemplo: [[5, 6], [7, 8]]">[ [5, 6], [7, 8] ]</textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="threadsMatrix" class="form-label">Número de Hilos</label>
-                        <input type="number" class="form-control" id="threadsMatrix" value="4" min="1" max="16">
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Multiplicar Matrices</button>
+        <div class="p-4">
+            <!-- Estado del Servicio -->
+            <div class="custom-card">
+                <div class="custom-card-header">
+                    <h5><i class="fas fa-heartbeat me-2"></i>Estado del Servicio</h5>
+                </div>
+                <div class="custom-card-body">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <button id="btnSaludo" class="btn btn-primary-modern btn-modern w-100">
+                                <i class="fas fa-satellite-dish me-2"></i>Verificar Conexión
+                            </button>
+                        </div>
+                        <div class="col-md-8">
+                            <div id="saludoResult"></div>
+                        </div>
                     </div>
                 </div>
-            </form>
-            <div id="matrixResult" class="mt-3"></div>
-        </div>
-    </div>
+            </div>
 
-    <!-- Estimación de Pi usando Monte Carlo -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Estimación de π usando Monte Carlo</h5>
-        </div>
-        <div class="card-body">
-            <form id="piForm">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="iterations" class="form-label">Número de Iteraciones</label>
-                        <input type="number" class="form-control" id="iterations" value="1000000" min="1000">
+            <!-- Multiplicación de Matrices -->
+            <div class="custom-card">
+                <div class="custom-card-header">
+                    <h5><i class="fas fa-th me-2"></i>Multiplicación de Matrices Paralela</h5>
+                </div>
+                <div class="custom-card-body">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="alert alert-info-modern">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Información:</strong> Ingrese las matrices en formato JSON. 
+                                El algoritmo utiliza paralelización para optimizar el cálculo.
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="threadsPi" class="form-label">Número de Hilos</label>
-                        <input type="number" class="form-control" id="threadsPi" value="4" min="1" max="16">
+                    
+                    <form id="matrixForm" class="form-modern">
+                        <!-- Controles de dimensiones -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-3">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-expand-arrows-alt me-2"></i>Filas Matriz A
+                                </label>
+                                <select class="form-control form-control-modern" id="rowsA">
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-arrows-alt-h me-2"></i>Columnas Matriz A
+                                </label>
+                                <select class="form-control form-control-modern" id="colsA">
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-expand-arrows-alt me-2"></i>Filas Matriz B
+                                </label>
+                                <select class="form-control form-control-modern" id="rowsB">
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-arrows-alt-h me-2"></i>Columnas Matriz B
+                                </label>
+                                <select class="form-control form-control-modern" id="colsB">
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-table me-2"></i>Matriz A
+                                </label>
+                                <div class="matrix-container" id="matrixA-container">
+                                    <!-- Matriz A se generará dinámicamente -->
+                                </div>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="randomA">
+                                        <i class="fas fa-dice me-1"></i>Llenar Aleatoriamente
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="clearA">
+                                        <i class="fas fa-eraser me-1"></i>Limpiar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label-modern">
+                                    <i class="fas fa-table me-2"></i>Matriz B
+                                </label>
+                                <div class="matrix-container" id="matrixB-container">
+                                    <!-- Matriz B se generará dinámicamente -->
+                                </div>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="randomB">
+                                        <i class="fas fa-dice me-1"></i>Llenar Aleatoriamente
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="clearB">
+                                        <i class="fas fa-eraser me-1"></i>Limpiar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="threadsMatrix" class="form-label-modern">
+                                    <i class="fas fa-microchip me-2"></i>Número de Hilos de Procesamiento
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-cogs"></i></span>
+                                    <input type="number" class="form-control form-control-modern" id="threadsMatrix" 
+                                           value="4" min="1" max="16">
+                                    <span class="input-group-text">hilos</span>
+                                </div>
+                                <small class="text-muted">Rango recomendado: 1-16 hilos</small>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <button type="submit" class="btn btn-success-modern btn-modern w-100">
+                                    <i class="fas fa-calculator me-2"></i>Multiplicar Matrices
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div id="matrixResult" class="mt-4"></div>
+                </div>
+            </div>
+
+            <!-- Estimación de Pi usando Monte Carlo -->
+            <div class="custom-card">
+                <div class="custom-card-header">
+                    <h5><i class="fas fa-pi me-2"></i>Estimación de π usando Monte Carlo</h5>
+                </div>
+                <div class="custom-card-body">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="alert alert-info-modern">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Método Monte Carlo:</strong> Utiliza muestreo aleatorio para aproximar π 
+                                mediante la relación de puntos dentro de un círculo inscrito en un cuadrado.
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Estimar π</button>
+                    
+                    <form id="piForm" class="form-modern">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="iterations" class="form-label-modern">
+                                    <i class="fas fa-infinity me-2"></i>Número de Iteraciones
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-dice"></i></span>
+                                    <input type="number" class="form-control form-control-modern" id="iterations" 
+                                           value="1000000" min="1000" max="100000000">
+                                    <span class="input-group-text">puntos</span>
+                                </div>
+                                <small class="text-muted">Mayor cantidad = mayor precisión (tiempo ↑)</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="threadsPi" class="form-label-modern">
+                                    <i class="fas fa-microchip me-2"></i>Hilos de Procesamiento Paralelo
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-cogs"></i></span>
+                                    <input type="number" class="form-control form-control-modern" id="threadsPi" 
+                                           value="4" min="1" max="16">
+                                    <span class="input-group-text">hilos</span>
+                                </div>
+                                <small class="text-muted">Paralelización para acelerar el cálculo</small>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-warning-modern btn-modern">
+                                    <i class="fas fa-pi me-2"></i>Calcular Estimación de π
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div id="piResult" class="mt-4"></div>
+                </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="custom-card">
+                <div class="custom-card-header">
+                    <h5><i class="fas fa-info-circle me-2"></i>Información Técnica</h5>
+                </div>
+                <div class="custom-card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="text-gradient"><i class="fas fa-th me-2"></i>Multiplicación de Matrices</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Algoritmo paralelo optimizado</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Soporte para matrices de cualquier dimensión</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Distribución automática de trabajo</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Validación de compatibilidad dimensional</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-gradient"><i class="fas fa-pi me-2"></i>Monte Carlo π</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Método estadístico de aproximación</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Procesamiento paralelo multi-hilo</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Convergencia mejorada con más iteraciones</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Comparación con valor real de π</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </form>
-            <div id="piResult" class="mt-3"></div>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
+            // Funciones para matrices
+            function generateMatrix(containerId, rows, cols, matrixName) {
+                const container = $(`#${containerId}`);
+                container.empty();
+                
+                const grid = $(`<div class="matrix-grid cols-${cols}"></div>`);
+                
+                for (let i = 0; i < rows; i++) {
+                    for (let j = 0; j < cols; j++) {
+                        const cell = $(`<input type="number" class="matrix-cell" 
+                                       placeholder="0" 
+                                       data-row="${i}" 
+                                       data-col="${j}" 
+                                       data-matrix="${matrixName}" 
+                                       step="any">`);
+                        grid.append(cell);
+                    }
+                }
+                
+                container.append(grid);
+            }
+            
+            function getMatrixFromCells(matrixName) {
+                const cells = $(`.matrix-cell[data-matrix="${matrixName}"]`);
+                const matrix = {};
+                
+                cells.each(function() {
+                    const row = parseInt($(this).data('row'));
+                    const col = parseInt($(this).data('col'));
+                    const value = parseFloat($(this).val()) || 0;
+                    
+                    if (!matrix[row]) matrix[row] = {};
+                    matrix[row][col] = value;
+                });
+                
+                // Convertir a array
+                const rows = Object.keys(matrix).length;
+                const cols = Object.keys(matrix[0] || {}).length;
+                const result = [];
+                
+                for (let i = 0; i < rows; i++) {
+                    result[i] = [];
+                    for (let j = 0; j < cols; j++) {
+                        result[i][j] = matrix[i][j] || 0;
+                    }
+                }
+                
+                return result;
+            }
+            
+            function fillMatrixRandomly(matrixName) {
+                $(`.matrix-cell[data-matrix="${matrixName}"]`).each(function() {
+                    $(this).val(Math.floor(Math.random() * 10) + 1);
+                });
+            }
+            
+            function clearMatrix(matrixName) {
+                $(`.matrix-cell[data-matrix="${matrixName}"]`).val('');
+            }
+            
+            function displayResultMatrix(matrix, containerId) {
+                const container = $(`#${containerId}`);
+                const rows = matrix.length;
+                const cols = matrix[0].length;
+                
+                const matrixHtml = `
+                    <div class="result-matrix">
+                        <div class="matrix-label">Resultado</div>
+                        <div class="matrix-grid cols-${cols}">
+                            ${matrix.map(row => 
+                                row.map(cell => 
+                                    `<div class="result-cell">${Number(cell).toFixed(2)}</div>`
+                                ).join('')
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                return matrixHtml;
+            }
+            
+            // Inicializar matrices
+            function initializeMatrices() {
+                const rowsA = parseInt($('#rowsA').val());
+                const colsA = parseInt($('#colsA').val());
+                const rowsB = parseInt($('#rowsB').val());
+                const colsB = parseInt($('#colsB').val());
+                
+                generateMatrix('matrixA-container', rowsA, colsA, 'A');
+                generateMatrix('matrixB-container', rowsB, colsB, 'B');
+            }
+            
+            // Event handlers para cambio de dimensiones
+            $('#rowsA, #colsA').change(function() {
+                const rowsA = parseInt($('#rowsA').val());
+                const colsA = parseInt($('#colsA').val());
+                generateMatrix('matrixA-container', rowsA, colsA, 'A');
+            });
+            
+            $('#rowsB, #colsB').change(function() {
+                const rowsB = parseInt($('#rowsB').val());
+                const colsB = parseInt($('#colsB').val());
+                generateMatrix('matrixB-container', rowsB, colsB, 'B');
+            });
+            
+            // Botones de acciones
+            $('#randomA').click(() => fillMatrixRandomly('A'));
+            $('#randomB').click(() => fillMatrixRandomly('B'));
+            $('#clearA').click(() => clearMatrix('A'));
+            $('#clearB').click(() => clearMatrix('B'));
+            
+            // Inicializar al cargar
+            initializeMatrices();
+            
+            // Llenar con valores de ejemplo
+            setTimeout(() => {
+                fillMatrixRandomly('A');
+                fillMatrixRandomly('B');
+            }, 500);
+
+            // Función para mostrar notificaciones
+            function showResult(elementId, message, type = 'success', additionalContent = '') {
+                const alertClass = type === 'success' ? 'alert-success-modern' : 
+                                 type === 'error' ? 'alert-danger-modern' : 'alert-info-modern';
+                const icon = type === 'success' ? 'fas fa-check-circle' : 
+                           type === 'error' ? 'fas fa-exclamation-triangle' : 'fas fa-info-circle';
+                
+                const result = `
+                    <div class="alert alert-modern ${alertClass}">
+                        <i class="${icon} me-2"></i>${message}
+                        ${additionalContent}
+                    </div>
+                `;
+                
+                $(elementId).html(result);
+            }
+
             // Verificar estado del servicio
             $('#btnSaludo').click(function () {
+                const button = $(this);
+                button.html('<span class="loading me-2"></span>Conectando...');
+                
                 $.get(apiConfig.cientifico.hello)
                     .done(function (data) {
-                        $('#saludoResult').html('<div class="alert alert-success">✅ Servicio activo: ' + data + '</div>');
+                        showResult('#saludoResult', 
+                            '<strong>✅ Servicio Activo:</strong> ' + data,
+                            'success');
                     })
                     .fail(function (xhr, status, error) {
-                        $('#saludoResult').html('<div class="alert alert-danger">❌ Error: ' + error + '</div>');
+                        showResult('#saludoResult', 
+                            '<strong>❌ Error de Conexión:</strong> ' + error, 
+                            'error');
+                    })
+                    .always(function() {
+                        button.html('<i class="fas fa-satellite-dish me-2"></i>Verificar Conexión');
                     });
             });
 
@@ -101,12 +457,39 @@
             $('#matrixForm').submit(function (e) {
                 e.preventDefault();
 
+                const submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.html('<span class="loading me-2"></span>Calculando...');
+
                 let matrixA, matrixB;
                 try {
-                    matrixA = JSON.parse($('#matrixA').val());
-                    matrixB = JSON.parse($('#matrixB').val());
+                    matrixA = getMatrixFromCells('A');
+                    matrixB = getMatrixFromCells('B');
                 } catch (error) {
-                    $('#matrixResult').html('<div class="alert alert-danger">❌ Error en formato JSON: ' + error.message + '</div>');
+                    showResult('#matrixResult', 
+                        '<strong>❌ Error al obtener matrices:</strong> ' + error.message, 
+                        'error');
+                    submitBtn.html('<i class="fas fa-calculator me-2"></i>Multiplicar Matrices');
+                    return;
+                }
+
+                // Validar dimensiones
+                if (!Array.isArray(matrixA) || !Array.isArray(matrixB) || 
+                    !Array.isArray(matrixA[0]) || !Array.isArray(matrixB[0])) {
+                    showResult('#matrixResult', 
+                        '<strong>❌ Error:</strong> Las matrices deben ser arrays bidimensionales', 
+                        'error');
+                    submitBtn.html('<i class="fas fa-calculator me-2"></i>Multiplicar Matrices');
+                    return;
+                }
+
+                const colsA = matrixA[0].length;
+                const rowsB = matrixB.length;
+                
+                if (colsA !== rowsB) {
+                    showResult('#matrixResult', 
+                        `<strong>❌ Error Dimensional:</strong> Las columnas de A (${colsA}) deben ser iguales a las filas de B (${rowsB})`, 
+                        'error');
+                    submitBtn.html('<i class="fas fa-calculator me-2"></i>Multiplicar Matrices');
                     return;
                 }
 
@@ -123,14 +506,30 @@
                     data: JSON.stringify(request)
                 })
                     .done(function (data) {
-                        const resultHtml = '<div class="alert alert-success">' +
-                            '<h6>✅ Resultado de la multiplicación:</h6>' +
-                            '<pre>' + JSON.stringify(data.result, null, 2) + '</pre>' +
-                            '</div>';
-                        $('#matrixResult').html(resultHtml);
+                        const resultMatrix = data.result;
+                        const dimensions = `${matrixA.length}×${matrixA[0].length} × ${matrixB.length}×${matrixB[0].length} = ${resultMatrix.length}×${resultMatrix[0].length}`;
+                        
+                        const additionalContent = `
+                            <div class="mt-3">
+                                <h6><i class="fas fa-chart-bar me-2"></i>Detalles del Cálculo:</h6>
+                                <p><strong>🔢 Dimensiones:</strong> ${dimensions}</p>
+                                <p><strong>⚡ Hilos utilizados:</strong> ${request.threads}</p>
+                                <p><strong>⏱️ Tiempo de ejecución:</strong> ${data.executionTime || 'N/A'}</p>
+                                ${displayResultMatrix(resultMatrix, 'matrixResultDisplay')}
+                            </div>
+                        `;
+                        
+                        showResult('#matrixResult', 
+                            '<strong>✅ Multiplicación Completada Exitosamente</strong>', 
+                            'success', additionalContent);
                     })
                     .fail(function (xhr, status, error) {
-                        $('#matrixResult').html('<div class="alert alert-danger">❌ Error: ' + error + '</div>');
+                        showResult('#matrixResult', 
+                            '<strong>❌ Error en el cálculo:</strong> ' + error, 
+                            'error');
+                    })
+                    .always(function() {
+                        submitBtn.html('<i class="fas fa-calculator me-2"></i>Multiplicar Matrices');
                     });
             });
 
@@ -138,30 +537,89 @@
             $('#piForm').submit(function (e) {
                 e.preventDefault();
 
+                const submitBtn = $(this).find('button[type="submit"]');
                 const iterations = parseInt($('#iterations').val());
                 const threads = parseInt($('#threadsPi').val());
 
-                $('#piResult').html('<div class="alert alert-info">⏳ Calculando π... Esto puede tomar unos segundos.</div>');
+                submitBtn.html('<span class="loading me-2"></span>Calculando π...');
+
+                showResult('#piResult', 
+                    `<strong>⏳ Calculando π...</strong> Procesando ${iterations.toLocaleString()} iteraciones con ${threads} hilos. Esto puede tomar unos momentos.`, 
+                    'info');
 
                 $.get(apiConfig.cientifico.pi + '?iterations=' + iterations + '&threads=' + threads)
                     .done(function (data) {
                         const precision = Math.abs(data.piEstimate - Math.PI);
-                        const resultHtml = '<div class="alert alert-success">' +
-                            '<h6>✅ Estimación de π completada:</h6>' +
-                            '<p><strong>Valor estimado:</strong> ' + data.piEstimate + '</p>' +
-                            '<p><strong>Valor real de π:</strong> ' + Math.PI + '</p>' +
-                            '<p><strong>Diferencia:</strong> ' + precision.toFixed(10) + '</p>' +
-                            '<p><strong>Iteraciones:</strong> ' + iterations.toLocaleString() + '</p>' +
-                            '<p><strong>Hilos utilizados:</strong> ' + threads + '</p>' +
-                            '</div>';
-                        $('#piResult').html(resultHtml);
+                        const accuracy = ((1 - precision / Math.PI) * 100).toFixed(6);
+                        
+                        const additionalContent = `
+                            <div class="mt-3">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="custom-card glass-effect">
+                                            <div class="p-3 text-center">
+                                                <h4 class="text-gradient mb-2">
+                                                    <i class="fas fa-pi me-2"></i>π Estimado
+                                                </h4>
+                                                <h3 class="mb-0">${data.piEstimate}</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="custom-card glass-effect">
+                                            <div class="p-3 text-center">
+                                                <h4 class="text-gradient mb-2">
+                                                    <i class="fas fa-bullseye me-2"></i>Precisión
+                                                </h4>
+                                                <h3 class="mb-0">${accuracy}%</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-modern mt-3">
+                                    <table class="table table-sm mb-0">
+                                        <tr>
+                                            <td><i class="fas fa-pi me-2"></i><strong>π Real:</strong></td>
+                                            <td>${Math.PI}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-calculator me-2"></i><strong>π Estimado:</strong></td>
+                                            <td>${data.piEstimate}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-ruler me-2"></i><strong>Diferencia:</strong></td>
+                                            <td>${precision.toFixed(10)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-infinity me-2"></i><strong>Iteraciones:</strong></td>
+                                            <td>${iterations.toLocaleString()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-microchip me-2"></i><strong>Hilos:</strong></td>
+                                            <td>${threads}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                        
+                        showResult('#piResult', 
+                            '<strong>✅ Estimación de π Completada</strong>', 
+                            'success', additionalContent);
                     })
                     .fail(function (xhr, status, error) {
-                        $('#piResult').html('<div class="alert alert-danger">❌ Error: ' + error + '</div>');
+                        showResult('#piResult', 
+                            '<strong>❌ Error en el cálculo:</strong> ' + error, 
+                            'error');
+                    })
+                    .always(function() {
+                        submitBtn.html('<i class="fas fa-pi me-2"></i>Calcular Estimación de π');
                     });
             });
+
+            // Auto verificar servicio al cargar
+            $('#btnSaludo').click();
         });
     </script>
 </body>
-
 </html>

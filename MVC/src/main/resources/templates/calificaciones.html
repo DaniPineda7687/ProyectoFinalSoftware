@@ -2,155 +2,360 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Calificaciones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Calificaciones - Sistema Académico</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/animations.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="/js/config.js"></script>
+    <script src="/js/app-utils.js"></script>
 </head>
-<body class="container py-5">
-    <h1 class="mb-4">Gestión de Calificaciones</h1>
-
-    <!-- Pestañas de navegación -->
-    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="estudiantes-tab" data-bs-toggle="tab" data-bs-target="#estudiantes" type="button" role="tab">Estudiantes</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab">Cursos</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="matriculas-tab" data-bs-toggle="tab" data-bs-target="#matriculas" type="button" role="tab">Matrículas</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="notas-tab" data-bs-toggle="tab" data-bs-target="#notas" type="button" role="tab">Consulta de Notas</button>
-        </li>
-    </ul>
-
-    <div class="tab-content" id="myTabContent">
-        <!-- Pestaña de Estudiantes -->
-        <div class="tab-pane fade show active" id="estudiantes" role="tabpanel">
-            <button class="btn btn-outline-primary mb-3" id="listarEstudiantes">Listar Estudiantes</button>
-            <table class="table" id="tablaEstudiantes">
-                <thead>
-                    <tr><th>ID</th><th>Nombre</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-
-            <h4 class="mt-4">Crear Estudiante</h4>
-            <form id="formEstudiante" class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Guardar Estudiante</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Pestaña de Cursos -->
-        <div class="tab-pane fade" id="cursos" role="tabpanel">
-            <button class="btn btn-outline-primary mb-3" id="listarCursos">Listar Cursos</button>
-            <table class="table" id="tablaCursos">
-                <thead>
-                    <tr><th>ID</th><th>Nombre</th><th>Tipo de Calificación</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-
-            <h4 class="mt-4">Crear Curso</h4>
-            <form id="formCurso" class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Nombre del Curso</label>
-                    <input type="text" class="form-control" id="nombreCurso">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Tipo de Calificación</label>
-                    <select class="form-control" id="tipoCurso">
-                        <option value="CUANTITATIVA">Cuantitativa (Numérica)</option>
-                        <option value="CUALITATIVA">Cualitativa (Texto)</option>
-                    </select>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Guardar Curso</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Pestaña de Matrículas -->
-        <div class="tab-pane fade" id="matriculas" role="tabpanel">
-            <h4 class="mb-3">Registrar Matrícula</h4>
-            <form id="formMatricula" class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Estudiante</label>
-                    <select class="form-control" id="selectEstudiante"></select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Curso</label>
-                    <select class="form-control" id="selectCurso"></select>
-                </div>
-                <div class="col-md-6 calificacionNumerica">
-                    <label class="form-label">Calificación Numérica</label>
-                    <input type="number" step="0.1" min="0" max="5" class="form-control" id="notaNumerica">
-                </div>
-                <div class="col-md-6 calificacionTextual" style="display:none">
-                    <label class="form-label">Calificación Textual</label>
-                    <select class="form-control" id="notaTextual">
-                        <option value="APROBO">Aprobó</option>
-                        <option value="REPROBO">Reprobó</option>
-                        <option value="PENDIENTE">Pendiente</option>
-                    </select>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Registrar Matrícula</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Pestaña de Consulta de Notas -->
-        <div class="tab-pane fade" id="notas" role="tabpanel">
-            <div class="mb-3 row">
-                <div class="col-md-6">
-                    <label class="form-label">Seleccione un Curso</label>
-                    <select class="form-control" id="selectCursoNotas"></select>
-                </div>
-                <div class="col-md-6 align-self-end">
-                    <button class="btn btn-outline-primary" id="consultarNotas">Consultar Notas</button>
+<body>
+    <div class="main-container">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-modern fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" href="/">
+                    <i class="fas fa-graduation-cap me-2"></i>
+                    Sistema Académico
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/libros">
+                                <i class="fas fa-book me-1"></i>Libros
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/calificaciones">
+                                <i class="fas fa-chart-line me-1"></i>Calificaciones
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cientifico">
+                                <i class="fas fa-calculator me-1"></i>Científico
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <table class="table" id="tablaNotas">
-                <thead>
-                    <tr><th>ID</th><th>Estudiante</th><th>Curso</th><th>Calificación</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        </nav>
+
+        <!-- Header -->
+        <div class="app-header">
+            <div class="nav-breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Gestión de Calificaciones</li>
+                    </ol>
+                </nav>
+            </div>
+            <h1 class="app-title">
+                <i class="fas fa-chart-line me-3"></i>
+                Gestión de Calificaciones
+            </h1>
+            <p class="app-subtitle">Sistema integral para la administración académica estudiantil</p>
+        </div>
+
+        <div class="p-4">
+            <!-- Pestañas de navegación -->
+            <ul class="nav nav-tabs nav-tabs-modern mb-4" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="estudiantes-tab" data-bs-toggle="tab" data-bs-target="#estudiantes" type="button" role="tab">
+                        <i class="fas fa-user-graduate me-2"></i>Estudiantes
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos" type="button" role="tab">
+                        <i class="fas fa-book-open me-2"></i>Cursos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="matriculas-tab" data-bs-toggle="tab" data-bs-target="#matriculas" type="button" role="tab">
+                        <i class="fas fa-clipboard-list me-2"></i>Matrículas
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="notas-tab" data-bs-toggle="tab" data-bs-target="#notas" type="button" role="tab">
+                        <i class="fas fa-poll me-2"></i>Consulta de Notas
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <!-- Pestaña de Estudiantes -->
+                <div class="tab-pane fade show active" id="estudiantes" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-user-graduate me-2"></i>Gestión de Estudiantes</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <button class="btn btn-primary-modern btn-modern" id="listarEstudiantes">
+                                <i class="fas fa-list me-2"></i>Listar Estudiantes
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-modern">
+                        <table class="table mb-0" id="tablaEstudiantes">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-user me-2"></i>Nombre del Estudiante</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-user-plus me-2"></i>Registrar Nuevo Estudiante</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <form id="formEstudiante" class="form-modern">
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-user me-2"></i>Nombre Completo del Estudiante
+                                        </label>
+                                        <input type="text" class="form-control form-control-modern" id="nombre" placeholder="Ingrese el nombre completo..." required>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-success-modern btn-modern w-100">
+                                            <i class="fas fa-save me-2"></i>Guardar Estudiante
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña de Cursos -->
+                <div class="tab-pane fade" id="cursos" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-book-open me-2"></i>Gestión de Cursos</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <button class="btn btn-primary-modern btn-modern" id="listarCursos">
+                                <i class="fas fa-list me-2"></i>Listar Cursos
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-modern">
+                        <table class="table mb-0" id="tablaCursos">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-book me-2"></i>Nombre del Curso</th>
+                                    <th><i class="fas fa-star me-2"></i>Tipo de Calificación</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-plus me-2"></i>Crear Nuevo Curso</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <form id="formCurso" class="form-modern">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-book me-2"></i>Nombre del Curso
+                                        </label>
+                                        <input type="text" class="form-control form-control-modern" id="nombreCurso" placeholder="Ej: Matemáticas Avanzadas" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-star me-2"></i>Tipo de Calificación
+                                        </label>
+                                        <select class="form-control form-control-modern" id="tipoCurso" required>
+                                            <option value="">Seleccionar tipo...</option>
+                                            <option value="CUANTITATIVA">📊 Cuantitativa (Numérica 0-5)</option>
+                                            <option value="CUALITATIVA">📝 Cualitativa (Aprobó/Reprobó)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success-modern btn-modern">
+                                            <i class="fas fa-save me-2"></i>Crear Curso
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña de Matrículas -->
+                <div class="tab-pane fade" id="matriculas" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-clipboard-list me-2"></i>Registrar Nueva Matrícula</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <form id="formMatricula" class="form-modern">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-user-graduate me-2"></i>Estudiante
+                                        </label>
+                                        <select class="form-control form-control-modern" id="selectEstudiante" required>
+                                            <option value="">Seleccione un estudiante...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-book-open me-2"></i>Curso
+                                        </label>
+                                        <select class="form-control form-control-modern" id="selectCurso" required>
+                                            <option value="">Seleccione un curso...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 calificacionNumerica">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-calculator me-2"></i>Calificación Numérica (0.0 - 5.0)
+                                        </label>
+                                        <input type="number" step="0.1" min="0" max="5" class="form-control form-control-modern" id="notaNumerica" placeholder="Ej: 4.5">
+                                    </div>
+                                    <div class="col-md-6 calificacionTextual" style="display:none">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-comment me-2"></i>Calificación Cualitativa
+                                        </label>
+                                        <select class="form-control form-control-modern" id="notaTextual">
+                                            <option value="">Seleccionar calificación...</option>
+                                            <option value="APROBO">✅ Aprobó</option>
+                                            <option value="REPROBO">❌ Reprobó</option>
+                                            <option value="PENDIENTE">⏳ Pendiente</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success-modern btn-modern">
+                                            <i class="fas fa-clipboard-check me-2"></i>Registrar Matrícula
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña de Consulta de Notas -->
+                <div class="tab-pane fade" id="notas" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-search me-2"></i>Consultar Notas por Curso</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label class="form-label-modern">
+                                        <i class="fas fa-book-open me-2"></i>Seleccione un Curso
+                                    </label>
+                                    <select class="form-control form-control-modern" id="selectCursoNotas">
+                                        <option value="">Seleccione un curso para consultar notas...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <button class="btn btn-primary-modern btn-modern w-100" id="consultarNotas">
+                                        <i class="fas fa-search me-2"></i>Consultar Notas
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-modern">
+                        <table class="table mb-0" id="tablaNotas">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID Matrícula</th>
+                                    <th><i class="fas fa-user-graduate me-2"></i>Estudiante</th>
+                                    <th><i class="fas fa-book me-2"></i>Curso</th>
+                                    <th><i class="fas fa-star me-2"></i>Calificación</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     $(function(){
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'success') {
+            const alertClass = type === 'success' ? 'alert-success-modern' : 'alert-danger-modern';
+            const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle';
+            
+            const notification = `
+                <div class="alert alert-modern ${alertClass} alert-dismissible fade show" role="alert">
+                    <i class="${icon} me-2"></i>${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            $('.tab-pane.active').prepend(notification);
+            
+            setTimeout(() => {
+                $('.alert').fadeOut();
+            }, 5000);
+        }
+
         // GESTIÓN DE ESTUDIANTES
         $('#listarEstudiantes').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Cargando...');
+            
             $.get(apiConfig.students.base, function(data){
                 var tbody = $('#tablaEstudiantes tbody');
                 tbody.empty();
                 data.forEach(function(est){
-                    var row = '<tr><td>'+est.id+'</td><td>'+est.name+'</td></tr>';
+                    var row = `<tr>
+                        <td><strong>${est.id}</strong></td>
+                        <td><i class="fas fa-user-graduate me-2"></i>${est.name}</td>
+                    </tr>`;
                     tbody.append(row);
                 });
 
-                // Actualizar el select de estudiantes al mismo tiempo
                 actualizarSelectEstudiantes(data);
+                showNotification(`${data.length} estudiantes cargados exitosamente`);
+            }).fail(function(){
+                showNotification('Error al cargar la lista de estudiantes', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-list me-2"></i>Listar Estudiantes');
             });
         });
 
         $('#formEstudiante').submit(function(e){
             e.preventDefault();
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.html('<span class="loading me-2"></span>Guardando...');
+            
             var estudiante = { name: $('#nombre').val() };
             if(!estudiante.name) {
-                alert('Por favor ingrese el nombre del estudiante');
+                showNotification('Por favor ingrese el nombre del estudiante', 'error');
+                submitBtn.html('<i class="fas fa-save me-2"></i>Guardar Estudiante');
                 return;
             }
 
@@ -160,40 +365,60 @@
                 contentType: 'application/json',
                 data: JSON.stringify(estudiante),
                 success: function(){
-                    alert('Estudiante creado con éxito');
+                    showNotification('¡Estudiante registrado exitosamente!');
                     $('#nombre').val('');
                     $('#listarEstudiantes').click();
                 },
                 error: function(xhr, status, error) {
-                    alert('Error al crear el estudiante: ' + error);
+                    showNotification('Error al registrar el estudiante: ' + error, 'error');
+                },
+                complete: function(){
+                    submitBtn.html('<i class="fas fa-save me-2"></i>Guardar Estudiante');
                 }
             });
         });
 
         // GESTIÓN DE CURSOS
         $('#listarCursos').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Cargando...');
+            
             $.get(apiConfig.courses.base, function(data){
                 var tbody = $('#tablaCursos tbody');
                 tbody.empty();
                 data.forEach(function(curso){
-                    var tipoCalificacion = curso.gradeType === 'CUANTITATIVA' ? 'Numérica' : 'Textual';
-                    var row = '<tr><td>'+curso.id+'</td><td>'+curso.name+'</td><td>'+tipoCalificacion+'</td></tr>';
+                    var tipoCalificacion = curso.gradeType === 'CUANTITATIVA' ? 
+                        '<span class="badge bg-primary"><i class="fas fa-calculator me-1"></i>Numérica</span>' : 
+                        '<span class="badge bg-success"><i class="fas fa-comment me-1"></i>Cualitativa</span>';
+                    var row = `<tr>
+                        <td><strong>${curso.id}</strong></td>
+                        <td><i class="fas fa-book me-2"></i>${curso.name}</td>
+                        <td>${tipoCalificacion}</td>
+                    </tr>`;
                     tbody.append(row);
                 });
 
-                // Actualizar el select de cursos al mismo tiempo
                 actualizarSelectCursos(data);
+                showNotification(`${data.length} cursos cargados exitosamente`);
+            }).fail(function(){
+                showNotification('Error al cargar la lista de cursos', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-list me-2"></i>Listar Cursos');
             });
         });
 
         $('#formCurso').submit(function(e){
             e.preventDefault();
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.html('<span class="loading me-2"></span>Creando...');
+            
             var curso = {
                 name: $('#nombreCurso').val(),
                 gradeType: $('#tipoCurso').val()
             };
-            if(!curso.name) {
-                alert('Por favor ingrese el nombre del curso');
+            if(!curso.name || !curso.gradeType) {
+                showNotification('Por favor complete todos los campos', 'error');
+                submitBtn.html('<i class="fas fa-save me-2"></i>Crear Curso');
                 return;
             }
 
@@ -203,18 +428,21 @@
                 contentType: 'application/json',
                 data: JSON.stringify(curso),
                 success: function(){
-                    alert('Curso creado con éxito');
+                    showNotification('¡Curso creado exitosamente!');
                     $('#nombreCurso').val('');
+                    $('#tipoCurso').val('');
                     $('#listarCursos').click();
                 },
                 error: function(xhr, status, error) {
-                    alert('Error al crear el curso: ' + error);
+                    showNotification('Error al crear el curso: ' + error, 'error');
+                },
+                complete: function(){
+                    submitBtn.html('<i class="fas fa-save me-2"></i>Crear Curso');
                 }
             });
         });
 
         // GESTIÓN DE MATRÍCULAS
-        // Actualizar campos de calificación según el tipo de curso seleccionado
         $('#selectCurso').change(function(){
             var cursoId = $(this).val();
             if(!cursoId) return;
@@ -225,9 +453,13 @@
                     if(cursoSeleccionado.gradeType === 'CUANTITATIVA') {
                         $('.calificacionNumerica').show();
                         $('.calificacionTextual').hide();
+                        $('#notaNumerica').attr('required', true);
+                        $('#notaTextual').attr('required', false);
                     } else {
                         $('.calificacionNumerica').hide();
                         $('.calificacionTextual').show();
+                        $('#notaNumerica').attr('required', false);
+                        $('#notaTextual').attr('required', true);
                     }
                 }
             });
@@ -235,46 +467,63 @@
 
         $('#formMatricula').submit(function(e){
             e.preventDefault();
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.html('<span class="loading me-2"></span>Procesando...');
+            
             var estudianteId = $('#selectEstudiante').val();
             var cursoId = $('#selectCurso').val();
 
             if(!estudianteId || !cursoId) {
-                alert('Por favor seleccione un estudiante y un curso');
+                showNotification('Por favor seleccione un estudiante y un curso', 'error');
+                submitBtn.html('<i class="fas fa-clipboard-check me-2"></i>Registrar Matrícula');
                 return;
             }
 
-            // Obtener los objetos completos
             $.get(apiConfig.students.base, function(estudiantes){
                 var estudianteSeleccionado = estudiantes.find(e => e.id == estudianteId);
 
                 $.get(apiConfig.courses.base, function(cursos){
                     var cursoSeleccionado = cursos.find(c => c.id == cursoId);
 
-                    // Crear el objeto de matrícula
                     var matricula = {
                         student: estudianteSeleccionado,
                         course: cursoSeleccionado
                     };
 
-                    // Agregar la calificación según el tipo de curso
                     if(cursoSeleccionado.gradeType === 'CUANTITATIVA') {
-                        matricula.gradeNumeric = parseFloat($('#notaNumerica').val());
+                        var nota = parseFloat($('#notaNumerica').val());
+                        if(isNaN(nota) || nota < 0 || nota > 5) {
+                            showNotification('La calificación numérica debe estar entre 0.0 y 5.0', 'error');
+                            submitBtn.html('<i class="fas fa-clipboard-check me-2"></i>Registrar Matrícula');
+                            return;
+                        }
+                        matricula.gradeNumeric = nota;
                     } else {
-                        matricula.gradeText = $('#notaTextual').val();
+                        var notaTexto = $('#notaTextual').val();
+                        if(!notaTexto) {
+                            showNotification('Por favor seleccione una calificación cualitativa', 'error');
+                            submitBtn.html('<i class="fas fa-clipboard-check me-2"></i>Registrar Matrícula');
+                            return;
+                        }
+                        matricula.gradeText = notaTexto;
                     }
 
-                    // Enviar la solicitud de matrícula
                     $.ajax({
                         url: apiConfig.enrollments.base,
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(matricula),
                         success: function(){
-                            alert('Matrícula registrada con éxito');
+                            showNotification('¡Matrícula registrada exitosamente!');
                             $('#formMatricula')[0].reset();
+                            $('.calificacionNumerica').show();
+                            $('.calificacionTextual').hide();
                         },
                         error: function(xhr, status, error) {
-                            alert('Error al registrar la matrícula: ' + error);
+                            showNotification('Error al registrar la matrícula: ' + error, 'error');
+                        },
+                        complete: function(){
+                            submitBtn.html('<i class="fas fa-clipboard-check me-2"></i>Registrar Matrícula');
                         }
                     });
                 });
@@ -283,59 +532,84 @@
 
         // CONSULTA DE NOTAS
         $('#consultarNotas').click(function(){
+            const button = $(this);
             var cursoId = $('#selectCursoNotas').val();
             if(!cursoId) {
-                alert('Por favor seleccione un curso');
+                showNotification('Por favor seleccione un curso', 'error');
                 return;
             }
+
+            button.html('<span class="loading me-2"></span>Consultando...');
 
             $.get(apiConfig.courses.enrollments(cursoId), function(matriculas){
                 var tbody = $('#tablaNotas tbody');
                 tbody.empty();
 
                 matriculas.forEach(function(matricula){
-                    var calificacion = matricula.course.gradeType === 'CUANTITATIVA' ?
-                        matricula.gradeNumeric : matricula.gradeText;
+                    var calificacion = '';
+                    if(matricula.course.gradeType === 'CUANTITATIVA') {
+                        var nota = matricula.gradeNumeric;
+                        var colorClass = nota >= 3.0 ? 'success' : 'danger';
+                        calificacion = `<span class="badge bg-${colorClass}"><i class="fas fa-calculator me-1"></i>${nota}</span>`;
+                    } else {
+                        var iconMap = {
+                            'APROBO': 'fas fa-check text-success',
+                            'REPROBO': 'fas fa-times text-danger',
+                            'PENDIENTE': 'fas fa-clock text-warning'
+                        };
+                        var icon = iconMap[matricula.gradeText] || 'fas fa-question';
+                        calificacion = `<span class="badge bg-secondary"><i class="${icon} me-1"></i>${matricula.gradeText}</span>`;
+                    }
 
-                    var row = '<tr><td>'+matricula.id+'</td><td>'+matricula.student.name+'</td><td>'+
-                            matricula.course.name+'</td><td>'+calificacion+'</td></tr>';
+                    var row = `<tr>
+                        <td><strong>${matricula.id}</strong></td>
+                        <td><i class="fas fa-user-graduate me-2"></i>${matricula.student.name}</td>
+                        <td><i class="fas fa-book me-2"></i>${matricula.course.name}</td>
+                        <td>${calificacion}</td>
+                    </tr>`;
                     tbody.append(row);
                 });
+
+                showNotification(`${matriculas.length} registros encontrados`);
+            }).fail(function(){
+                showNotification('Error al consultar las notas', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-search me-2"></i>Consultar Notas');
             });
         });
 
-        // Funciones auxiliares para actualizar los selects
+        // Funciones auxiliares
         function actualizarSelectEstudiantes(estudiantes) {
             var select = $('#selectEstudiante');
             select.empty();
-            select.append('<option value="">Seleccione un estudiante</option>');
+            select.append('<option value="">Seleccione un estudiante...</option>');
 
             estudiantes.forEach(function(est){
-                select.append('<option value="'+est.id+'">'+est.name+'</option>');
+                select.append(`<option value="${est.id}"><i class="fas fa-user me-1"></i>${est.name}</option>`);
             });
         }
 
         function actualizarSelectCursos(cursos) {
-            // Actualizar select en la pestaña de matrículas
             var select = $('#selectCurso');
             select.empty();
-            select.append('<option value="">Seleccione un curso</option>');
+            select.append('<option value="">Seleccione un curso...</option>');
 
             cursos.forEach(function(curso){
-                select.append('<option value="'+curso.id+'">'+curso.name+'</option>');
+                var icon = curso.gradeType === 'CUANTITATIVA' ? '📊' : '📝';
+                select.append(`<option value="${curso.id}">${icon} ${curso.name}</option>`);
             });
 
-            // Actualizar select en la pestaña de consulta de notas
             var selectNotas = $('#selectCursoNotas');
             selectNotas.empty();
-            selectNotas.append('<option value="">Seleccione un curso</option>');
+            selectNotas.append('<option value="">Seleccione un curso para consultar notas...</option>');
 
             cursos.forEach(function(curso){
-                selectNotas.append('<option value="'+curso.id+'">'+curso.name+'</option>');
+                var icon = curso.gradeType === 'CUANTITATIVA' ? '📊' : '📝';
+                selectNotas.append(`<option value="${curso.id}">${icon} ${curso.name}</option>`);
             });
         }
 
-        // Inicialización: Cargar listas al inicio
+        // Inicialización
         $('#listarEstudiantes').click();
         $('#listarCursos').click();
     });

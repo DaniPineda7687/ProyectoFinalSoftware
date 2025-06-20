@@ -2,196 +2,441 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión Biblioteca</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Biblioteca - Sistema Académico</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/animations.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="/js/config.js"></script>
+    <script src="/js/app-utils.js"></script>
 </head>
-<body class="container py-5">
-    <h1 class="mb-4">Gestión de Biblioteca</h1>
-
-    <!-- Pestañas de navegación -->
-    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="libros-tab" data-bs-toggle="tab" data-bs-target="#libros" type="button" role="tab">Libros</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">Usuarios</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="prestamos-tab" data-bs-toggle="tab" data-bs-target="#prestamos" type="button" role="tab">Préstamos</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="reportes-tab" data-bs-toggle="tab" data-bs-target="#reportes" type="button" role="tab">Reportes</button>
-        </li>
-    </ul>
-
-    <div class="tab-content" id="myTabContent">
-        <!-- Pestaña Libros -->
-        <div class="tab-pane fade show active" id="libros" role="tabpanel">
-            <div class="d-flex justify-content-between mb-3">
-                <button class="btn btn-outline-primary" id="listar">Listar Libros</button>
-                <div class="input-group w-50">
-                    <input type="number" class="form-control" id="libro-id" placeholder="ID del libro">
-                    <button class="btn btn-outline-secondary" id="buscar-libro">Buscar</button>
-                    <button class="btn btn-outline-danger" id="eliminar-libro">Eliminar</button>
-                </div>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-modern fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Sistema Académico
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/libros">
+                            <i class="fas fa-book me-1"></i>Libros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/calificaciones">
+                            <i class="fas fa-chart-line me-1"></i>Calificaciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cientifico">
+                            <i class="fas fa-calculator me-1"></i>Científico
+                        </a>
+                    </li>
+                </ul>
             </div>
+        </div>
+    </nav>
 
-            <table class="table" id="tablaLibros">
-                <thead>
-                    <tr><th>ID</th><th>Titulo</th><th>Autor</th><th>Disponible</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-
-            <h4 class="mt-4">Crear Libro</h4>
-            <form id="formLibro" class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Titulo</label>
-                    <input type="text" class="form-control" id="titulo">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Autor</label>
-                    <input type="text" class="form-control" id="autor">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-            </form>
+    <div class="main-container">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="nav-breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Gestión de Biblioteca</li>
+                    </ol>
+                </nav>
+            </div>
+            <h1 class="app-title">
+                <i class="fas fa-book me-3"></i>
+                Gestión de Biblioteca
+            </h1>
+            <p class="app-subtitle">Sistema integral de administración bibliotecaria</p>
         </div>
 
-        <!-- Pestaña Usuarios -->
-        <div class="tab-pane fade" id="usuarios" role="tabpanel">
-            <div class="d-flex justify-content-between mb-3">
-                <button class="btn btn-outline-primary" id="listar-usuarios">Listar Usuarios</button>
-                <div class="input-group w-50">
-                    <input type="number" class="form-control" id="usuario-id" placeholder="ID del usuario">
-                    <button class="btn btn-outline-secondary" id="buscar-usuario">Buscar</button>
-                    <button class="btn btn-outline-danger" id="eliminar-usuario">Eliminar</button>
-                </div>
-            </div>
+        <div class="p-4">
+            <!-- Pestañas de navegación -->
+            <ul class="nav nav-tabs nav-tabs-modern mb-4" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="libros-tab" data-bs-toggle="tab" data-bs-target="#libros" type="button" role="tab">
+                        <i class="fas fa-book me-2"></i>Libros
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios" type="button" role="tab">
+                        <i class="fas fa-users me-2"></i>Usuarios
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="prestamos-tab" data-bs-toggle="tab" data-bs-target="#prestamos" type="button" role="tab">
+                        <i class="fas fa-handshake me-2"></i>Préstamos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reportes-tab" data-bs-toggle="tab" data-bs-target="#reportes" type="button" role="tab">
+                        <i class="fas fa-chart-bar me-2"></i>Reportes
+                    </button>
+                </li>
+            </ul>
 
-            <table class="table" id="tablaUsuarios">
-                <thead>
-                    <tr><th>ID</th><th>Nombre</th><th>Rol</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="tab-content" id="myTabContent">
+                <!-- Pestaña Libros -->
+                <div class="tab-pane fade show active" id="libros" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-search me-2"></i>Búsqueda y Acciones</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary-modern btn-modern w-100" id="listar">
+                                        <i class="fas fa-list me-2"></i>Listar Todos los Libros
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control form-control-modern" id="libro-id" placeholder="ID del libro">
+                                        <button class="btn btn-secondary-modern btn-modern" id="buscar-libro">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-warning-modern btn-modern w-100" id="eliminar-libro">
+                                        <i class="fas fa-trash me-2"></i>Eliminar Libro
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <h4 class="mt-4">Crear Usuario</h4>
-            <form id="formUsuario" class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre-usuario">
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Rol</label>
-                    <select class="form-control" id="rol-usuario">
-                        <option value="DOCENTE">Docente</option>
-                        <option value="ESTUDIANTE">Estudiante</option>
-                        <option value="EMPLEADO">Empleado</option>
-                    </select>
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Guardar Usuario</button>
-                </div>
-            </form>
-        </div>
+                    <div class="table-modern">
+                        <table class="table mb-0" id="tablaLibros">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-book me-2"></i>Título</th>
+                                    <th><i class="fas fa-user-edit me-2"></i>Autor</th>
+                                    <th><i class="fas fa-check-circle me-2"></i>Disponible</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
 
-        <!-- Pestaña Préstamos -->
-        <div class="tab-pane fade" id="prestamos" role="tabpanel">
-            <button class="btn btn-outline-primary mb-3" id="listar-prestamos">Listar Préstamos</button>
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-plus me-2"></i>Agregar Nuevo Libro</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <form id="formLibro" class="form-modern">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-book me-2"></i>Título del Libro
+                                        </label>
+                                        <input type="text" class="form-control form-control-modern" id="titulo" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-user-edit me-2"></i>Autor
+                                        </label>
+                                        <input type="text" class="form-control form-control-modern" id="autor" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success-modern btn-modern">
+                                            <i class="fas fa-save me-2"></i>Guardar Libro
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-            <table class="table" id="tablaPrestamos">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Libro</th>
-                        <th>Fecha Préstamo</th>
-                        <th>Fecha Entrega</th>
-                        <th>Fecha Devolución</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+                <!-- Pestaña Usuarios -->
+                <div class="tab-pane fade" id="usuarios" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-search me-2"></i>Gestión de Usuarios</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary-modern btn-modern w-100" id="listar-usuarios">
+                                        <i class="fas fa-users me-2"></i>Listar Usuarios
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control form-control-modern" id="usuario-id" placeholder="ID del usuario">
+                                        <button class="btn btn-secondary-modern btn-modern" id="buscar-usuario">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-warning-modern btn-modern w-100" id="eliminar-usuario">
+                                        <i class="fas fa-user-times me-2"></i>Eliminar Usuario
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <h4 class="mt-4">Solicitar Préstamo</h4>
-            <form id="formPrestamo" class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">ID Usuario</label>
-                    <input type="number" class="form-control" id="prestamo-usuario-id">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">ID Libro</label>
-                    <input type="number" class="form-control" id="prestamo-libro-id">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Fecha Entrega</label>
-                    <input type="date" class="form-control" id="prestamo-fecha-entrega">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Solicitar Préstamo</button>
-                </div>
-            </form>
-        </div>
+                    <div class="table-modern">
+                        <table class="table mb-0" id="tablaUsuarios">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-user me-2"></i>Nombre</th>
+                                    <th><i class="fas fa-user-tag me-2"></i>Rol</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
 
-        <!-- Pestaña Reportes -->
-        <div class="tab-pane fade" id="reportes" role="tabpanel">
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <button class="btn btn-outline-primary w-100" id="reporte-usuarios">Reporte Usuarios</button>
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-user-plus me-2"></i>Registrar Usuario</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <form id="formUsuario" class="form-modern">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-user me-2"></i>Nombre Completo
+                                        </label>
+                                        <input type="text" class="form-control form-control-modern" id="nombre-usuario" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-user-tag me-2"></i>Rol
+                                        </label>
+                                        <select class="form-control form-control-modern" id="rol-usuario" required>
+                                            <option value="">Seleccionar rol...</option>
+                                            <option value="DOCENTE">Docente</option>
+                                            <option value="ESTUDIANTE">Estudiante</option>
+                                            <option value="EMPLEADO">Empleado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success-modern btn-modern">
+                                            <i class="fas fa-user-plus me-2"></i>Registrar Usuario
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <button class="btn btn-outline-primary w-100" id="reporte-multas">Reporte Multas</button>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-outline-primary w-100" id="reporte-libros">Reporte Libros</button>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-outline-primary w-100" id="reporte-libros-prestados">Reporte Libros Prestados</button>
-                </div>
-            </div>
 
-            <div id="reporte-resultado">
-                <h4 class="mb-3">Resultado del Reporte</h4>
-                <div id="reporte-contenido"></div>
+                <!-- Pestaña Préstamos -->
+                <div class="tab-pane fade" id="prestamos" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-handshake me-2"></i>Gestión de Préstamos</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <button class="btn btn-primary-modern btn-modern" id="listar-prestamos">
+                                <i class="fas fa-list me-2"></i>Actualizar Lista de Préstamos
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-modern">
+                        <table class="table mb-0" id="tablaPrestamos">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-user me-2"></i>Usuario</th>
+                                    <th><i class="fas fa-book me-2"></i>Libro</th>
+                                    <th><i class="fas fa-calendar-alt me-2"></i>F. Préstamo</th>
+                                    <th><i class="fas fa-calendar-check me-2"></i>F. Entrega</th>
+                                    <th><i class="fas fa-calendar-times me-2"></i>F. Devolución</th>
+                                    <th><i class="fas fa-cogs me-2"></i>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-plus me-2"></i>Nuevo Préstamo</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <form id="formPrestamo" class="form-modern">
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-user me-2"></i>ID Usuario
+                                        </label>
+                                        <input type="number" class="form-control form-control-modern" id="prestamo-usuario-id" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-book me-2"></i>ID Libro
+                                        </label>
+                                        <input type="number" class="form-control form-control-modern" id="prestamo-libro-id" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label-modern">
+                                            <i class="fas fa-calendar-check me-2"></i>Fecha de Entrega
+                                        </label>
+                                        <input type="date" class="form-control form-control-modern" id="prestamo-fecha-entrega" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-success-modern btn-modern">
+                                            <i class="fas fa-handshake me-2"></i>Solicitar Préstamo
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña Reportes -->
+                <div class="tab-pane fade" id="reportes" role="tabpanel">
+                    <div class="custom-card">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-chart-bar me-2"></i>Generar Reportes</h5>
+                        </div>
+                        <div class="custom-card-body">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary-modern btn-modern w-100" id="reporte-usuarios">
+                                        <i class="fas fa-users me-2"></i>Usuarios
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-warning-modern btn-modern w-100" id="reporte-multas">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>Multas
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-success-modern btn-modern w-100" id="reporte-libros">
+                                        <i class="fas fa-book me-2"></i>Libros
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-secondary-modern btn-modern w-100" id="reporte-libros-prestados">
+                                        <i class="fas fa-book-open me-2"></i>Prestados
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="custom-card" id="reporte-resultado" style="display: none;">
+                        <div class="custom-card-header">
+                            <h5><i class="fas fa-file-alt me-2"></i>Resultado del Reporte</h5>
+                        </div>
+                        <div class="custom-card-body" id="reporte-contenido">
+                            <!-- Contenido dinámico del reporte -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
     $(function(){
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'success') {
+            const alertClass = type === 'success' ? 'alert-success-modern' : 'alert-danger-modern';
+            const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle';
+            
+            const notification = `
+                <div class="alert alert-modern ${alertClass} alert-dismissible fade show" role="alert">
+                    <i class="${icon} me-2"></i>${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            // Agregar al inicio del contenido de la pestaña activa
+            $('.tab-pane.active').prepend(notification);
+            
+            // Auto-ocultar después de 5 segundos
+            setTimeout(() => {
+                $('.alert').fadeOut();
+            }, 5000);
+        }
+
         // GESTIÓN DE LIBROS
         $('#listar').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Cargando...');
+            
             $.get(apiConfig.libros.base, function(data){
                 var tbody = $('#tablaLibros tbody');
                 tbody.empty();
                 data.forEach(function(libro){
-                    var row = '<tr><td>'+libro.id+'</td><td>'+libro.titulo+'</td><td>'+libro.autor+'</td><td>'+libro.disponible+'</td></tr>';
+                    const disponible = libro.disponible ? 
+                        '<span class="badge bg-success"><i class="fas fa-check"></i> Sí</span>' : 
+                        '<span class="badge bg-danger"><i class="fas fa-times"></i> No</span>';
+                    var row = `<tr>
+                        <td><strong>${libro.id}</strong></td>
+                        <td>${libro.titulo}</td>
+                        <td><i class="fas fa-user-edit me-1"></i>${libro.autor}</td>
+                        <td>${disponible}</td>
+                    </tr>`;
                     tbody.append(row);
                 });
+                showNotification(`${data.length} libros cargados exitosamente`);
+            }).fail(function(){
+                showNotification('Error al cargar la lista de libros', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-list me-2"></i>Listar Todos los Libros');
             });
         });
 
         $('#formLibro').submit(function(e){
             e.preventDefault();
-            var libro = { titulo: $('#titulo').val(), autor: $('#autor').val(), disponible: true };
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.html('<span class="loading me-2"></span>Guardando...');
+            
+            var libro = { 
+                titulo: $('#titulo').val(), 
+                autor: $('#autor').val(), 
+                disponible: true 
+            };
+            
             $.ajax({
                 url: apiConfig.libros.base,
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(libro),
                 success: function(){
-                    alert('Libro creado con éxito');
+                    showNotification('¡Libro creado exitosamente!');
                     $('#listar').click();
                     $('#formLibro')[0].reset();
                 },
                 error: function(xhr, status, error) {
-                    alert('Error al crear el libro: ' + error);
+                    showNotification('Error al crear el libro: ' + error, 'error');
+                },
+                complete: function(){
+                    submitBtn.html('<i class="fas fa-save me-2"></i>Guardar Libro');
                 }
             });
         });
@@ -199,37 +444,58 @@
         $('#buscar-libro').click(function(){
             var id = $('#libro-id').val();
             if(!id) {
-                alert('Por favor, ingrese el ID del libro');
+                showNotification('Por favor, ingrese el ID del libro', 'error');
                 return;
             }
+
+            const button = $(this);
+            button.html('<span class="loading"></span>');
 
             $.get(apiConfig.libros.obtenerPorId(id), function(libro){
                 var tbody = $('#tablaLibros tbody');
                 tbody.empty();
-                var row = '<tr><td>'+libro.id+'</td><td>'+libro.titulo+'</td><td>'+libro.autor+'</td><td>'+libro.disponible+'</td></tr>';
+                const disponible = libro.disponible ? 
+                    '<span class="badge bg-success"><i class="fas fa-check"></i> Sí</span>' : 
+                    '<span class="badge bg-danger"><i class="fas fa-times"></i> No</span>';
+                var row = `<tr>
+                    <td><strong>${libro.id}</strong></td>
+                    <td>${libro.titulo}</td>
+                    <td><i class="fas fa-user-edit me-1"></i>${libro.autor}</td>
+                    <td>${disponible}</td>
+                </tr>`;
                 tbody.append(row);
+                showNotification('Libro encontrado');
             }).fail(function(){
-                alert('No se encontró el libro con ID: ' + id);
+                showNotification('No se encontró el libro con ID: ' + id, 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-search"></i>');
             });
         });
 
         $('#eliminar-libro').click(function(){
             var id = $('#libro-id').val();
             if(!id) {
-                alert('Por favor, ingrese el ID del libro');
+                showNotification('Por favor, ingrese el ID del libro', 'error');
                 return;
             }
 
             if(confirm('¿Está seguro de eliminar el libro con ID: ' + id + '?')) {
+                const button = $(this);
+                button.html('<span class="loading me-2"></span>Eliminando...');
+                
                 $.ajax({
                     url: apiConfig.libros.eliminar(id),
                     method: 'DELETE',
                     success: function(){
-                        alert('Libro eliminado con éxito');
+                        showNotification('¡Libro eliminado exitosamente!');
                         $('#listar').click();
+                        $('#libro-id').val('');
                     },
                     error: function(){
-                        alert('Error al eliminar el libro');
+                        showNotification('Error al eliminar el libro', 'error');
+                    },
+                    complete: function(){
+                        button.html('<i class="fas fa-trash me-2"></i>Eliminar Libro');
                     }
                 });
             }
@@ -237,18 +503,38 @@
 
         // GESTIÓN DE USUARIOS
         $('#listar-usuarios').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Cargando...');
+            
             $.get(apiConfig.usuarios.base, function(data){
                 var tbody = $('#tablaUsuarios tbody');
                 tbody.empty();
                 data.forEach(function(usuario){
-                    var row = '<tr><td>'+usuario.id+'</td><td>'+usuario.nombre+'</td><td>'+usuario.rol+'</td></tr>';
+                    const roleIcon = {
+                        'DOCENTE': 'fas fa-chalkboard-teacher text-primary',
+                        'ESTUDIANTE': 'fas fa-graduation-cap text-success',
+                        'EMPLEADO': 'fas fa-briefcase text-info'
+                    };
+                    var row = `<tr>
+                        <td><strong>${usuario.id}</strong></td>
+                        <td><i class="fas fa-user me-1"></i>${usuario.nombre}</td>
+                        <td><i class="${roleIcon[usuario.rol] || 'fas fa-user'} me-1"></i>${usuario.rol}</td>
+                    </tr>`;
                     tbody.append(row);
                 });
+                showNotification(`${data.length} usuarios cargados exitosamente`);
+            }).fail(function(){
+                showNotification('Error al cargar la lista de usuarios', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-users me-2"></i>Listar Usuarios');
             });
         });
 
         $('#formUsuario').submit(function(e){
             e.preventDefault();
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.html('<span class="loading me-2"></span>Registrando...');
+            
             var usuario = {
                 nombre: $('#nombre-usuario').val(),
                 rol: $('#rol-usuario').val()
@@ -260,12 +546,15 @@
                 contentType: 'application/json',
                 data: JSON.stringify(usuario),
                 success: function(){
-                    alert('Usuario creado con éxito');
+                    showNotification('¡Usuario registrado exitosamente!');
                     $('#listar-usuarios').click();
                     $('#formUsuario')[0].reset();
                 },
                 error: function(xhr, status, error) {
-                    alert('Error al crear el usuario: ' + error);
+                    showNotification('Error al registrar el usuario: ' + error, 'error');
+                },
+                complete: function(){
+                    submitBtn.html('<i class="fas fa-user-plus me-2"></i>Registrar Usuario');
                 }
             });
         });
@@ -273,37 +562,59 @@
         $('#buscar-usuario').click(function(){
             var id = $('#usuario-id').val();
             if(!id) {
-                alert('Por favor, ingrese el ID del usuario');
+                showNotification('Por favor, ingrese el ID del usuario', 'error');
                 return;
             }
+
+            const button = $(this);
+            button.html('<span class="loading"></span>');
 
             $.get(apiConfig.usuarios.obtenerPorId(id), function(usuario){
                 var tbody = $('#tablaUsuarios tbody');
                 tbody.empty();
-                var row = '<tr><td>'+usuario.id+'</td><td>'+usuario.nombre+'</td><td>'+usuario.rol+'</td></tr>';
+                const roleIcon = {
+                    'DOCENTE': 'fas fa-chalkboard-teacher text-primary',
+                    'ESTUDIANTE': 'fas fa-graduation-cap text-success',
+                    'EMPLEADO': 'fas fa-briefcase text-info'
+                };
+                var row = `<tr>
+                    <td><strong>${usuario.id}</strong></td>
+                    <td><i class="fas fa-user me-1"></i>${usuario.nombre}</td>
+                    <td><i class="${roleIcon[usuario.rol] || 'fas fa-user'} me-1"></i>${usuario.rol}</td>
+                </tr>`;
                 tbody.append(row);
+                showNotification('Usuario encontrado');
             }).fail(function(){
-                alert('No se encontró el usuario con ID: ' + id);
+                showNotification('No se encontró el usuario con ID: ' + id, 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-search"></i>');
             });
         });
 
         $('#eliminar-usuario').click(function(){
             var id = $('#usuario-id').val();
             if(!id) {
-                alert('Por favor, ingrese el ID del usuario');
+                showNotification('Por favor, ingrese el ID del usuario', 'error');
                 return;
             }
 
             if(confirm('¿Está seguro de eliminar el usuario con ID: ' + id + '?')) {
+                const button = $(this);
+                button.html('<span class="loading me-2"></span>Eliminando...');
+                
                 $.ajax({
                     url: apiConfig.usuarios.eliminar(id),
                     method: 'DELETE',
                     success: function(){
-                        alert('Usuario eliminado con éxito');
+                        showNotification('¡Usuario eliminado exitosamente!');
                         $('#listar-usuarios').click();
+                        $('#usuario-id').val('');
                     },
                     error: function(){
-                        alert('Error al eliminar el usuario');
+                        showNotification('Error al eliminar el usuario', 'error');
+                    },
+                    complete: function(){
+                        button.html('<i class="fas fa-user-times me-2"></i>Eliminar Usuario');
                     }
                 });
             }
@@ -311,17 +622,31 @@
 
         // GESTIÓN DE PRÉSTAMOS
         $('#listar-prestamos').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Cargando...');
+            
             $.get(apiConfig.prestamos.base, function(data){
                 var tbody = $('#tablaPrestamos tbody');
                 tbody.empty();
                 data.forEach(function(prestamo){
-                    var fechaDevolucion = prestamo.fechaDevolucion ? prestamo.fechaDevolucion : 'Pendiente';
-                    var accion = prestamo.fechaDevolucion ? '' :
-                        '<button class="btn btn-sm btn-success devolver-libro" data-id="'+prestamo.id+'">Devolver</button>';
+                    var fechaDevolucion = prestamo.fechaDevolucion ? 
+                        `<span class="badge bg-success"><i class="fas fa-check"></i> ${prestamo.fechaDevolucion}</span>` : 
+                        '<span class="badge bg-warning"><i class="fas fa-clock"></i> Pendiente</span>';
+                    var accion = prestamo.fechaDevolucion ? 
+                        '<span class="text-muted">Devuelto</span>' :
+                        `<button class="btn btn-success-modern btn-sm devolver-libro" data-id="${prestamo.id}">
+                            <i class="fas fa-undo me-1"></i>Devolver
+                        </button>`;
 
-                    var row = '<tr><td>'+prestamo.id+'</td><td>'+prestamo.usuario.nombre+'</td><td>'+
-                              prestamo.libro.titulo+'</td><td>'+prestamo.fechaPrestamo+'</td><td>'+
-                              prestamo.fechaEntrega+'</td><td>'+fechaDevolucion+'</td><td>'+accion+'</td></tr>';
+                    var row = `<tr>
+                        <td><strong>${prestamo.id}</strong></td>
+                        <td><i class="fas fa-user me-1"></i>${prestamo.usuario.nombre}</td>
+                        <td><i class="fas fa-book me-1"></i>${prestamo.libro.titulo}</td>
+                        <td><i class="fas fa-calendar-alt me-1"></i>${prestamo.fechaPrestamo}</td>
+                        <td><i class="fas fa-calendar-check me-1"></i>${prestamo.fechaEntrega}</td>
+                        <td>${fechaDevolucion}</td>
+                        <td>${accion}</td>
+                    </tr>`;
                     tbody.append(row);
                 });
 
@@ -330,11 +655,19 @@
                     var prestamoId = $(this).data('id');
                     devolverLibro(prestamoId);
                 });
+                showNotification(`${data.length} préstamos cargados exitosamente`);
+            }).fail(function(){
+                showNotification('Error al cargar la lista de préstamos', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-list me-2"></i>Actualizar Lista de Préstamos');
             });
         });
 
         $('#formPrestamo').submit(function(e){
             e.preventDefault();
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.html('<span class="loading me-2"></span>Procesando...');
+            
             var solicitud = {
                 usuarioId: $('#prestamo-usuario-id').val(),
                 libroId: $('#prestamo-libro-id').val(),
@@ -347,12 +680,15 @@
                 contentType: 'application/json',
                 data: JSON.stringify(solicitud),
                 success: function(response){
-                    alert('Préstamo realizado con éxito');
+                    showNotification('¡Préstamo realizado exitosamente!');
                     $('#listar-prestamos').click();
                     $('#formPrestamo')[0].reset();
                 },
                 error: function(xhr, status, error) {
-                    alert('Error al solicitar el préstamo: ' + error);
+                    showNotification('Error al solicitar el préstamo: ' + error, 'error');
+                },
+                complete: function(){
+                    submitBtn.html('<i class="fas fa-handshake me-2"></i>Solicitar Préstamo');
                 }
             });
         });
@@ -363,11 +699,11 @@
                     url: apiConfig.prestamos.devolver(prestamoId),
                     method: 'POST',
                     success: function(){
-                        alert('Libro devuelto con éxito');
+                        showNotification('¡Libro devuelto exitosamente!');
                         $('#listar-prestamos').click();
                     },
                     error: function(){
-                        alert('Error al devolver el libro');
+                        showNotification('Error al devolver el libro', 'error');
                     }
                 });
             }
@@ -375,60 +711,149 @@
 
         // GESTIÓN DE REPORTES
         $('#reporte-usuarios').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Generando...');
+            
             $.get(apiConfig.reportes.usuarios, function(data){
                 mostrarTablaUsuarios(data, 'Reporte de Usuarios');
+                $('#reporte-resultado').show();
+            }).fail(function(){
+                showNotification('Error al generar el reporte de usuarios', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-users me-2"></i>Usuarios');
             });
         });
 
         $('#reporte-multas').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Generando...');
+            
             $.get(apiConfig.reportes.multas, function(data){
                 mostrarTablaMultas(data, 'Reporte de Multas');
+                $('#reporte-resultado').show();
+            }).fail(function(){
+                showNotification('Error al generar el reporte de multas', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-exclamation-triangle me-2"></i>Multas');
             });
         });
 
         $('#reporte-libros').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Generando...');
+            
             $.get(apiConfig.reportes.libros, function(data){
                 mostrarTablaLibros(data, 'Reporte de Libros');
+                $('#reporte-resultado').show();
+            }).fail(function(){
+                showNotification('Error al generar el reporte de libros', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-book me-2"></i>Libros');
             });
         });
 
         $('#reporte-libros-prestados').click(function(){
+            const button = $(this);
+            button.html('<span class="loading me-2"></span>Generando...');
+            
             $.get(apiConfig.reportes.librosPrestados, function(data){
                 mostrarTablaLibros(data, 'Reporte de Libros Prestados');
+                $('#reporte-resultado').show();
+            }).fail(function(){
+                showNotification('Error al generar el reporte de libros prestados', 'error');
+            }).always(function(){
+                button.html('<i class="fas fa-book-open me-2"></i>Prestados');
             });
         });
 
         function mostrarTablaUsuarios(data, titulo) {
-            var html = '<h5>' + titulo + '</h5><table class="table"><thead><tr><th>ID</th><th>Nombre</th><th>Rol</th></tr></thead><tbody>';
+            var html = `<h5 class="text-gradient mb-3">${titulo}</h5>
+                       <div class="table-modern">
+                           <table class="table mb-0">
+                               <thead>
+                                   <tr>
+                                       <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                       <th><i class="fas fa-user me-2"></i>Nombre</th>
+                                       <th><i class="fas fa-user-tag me-2"></i>Rol</th>
+                                   </tr>
+                               </thead>
+                               <tbody>`;
 
             data.forEach(function(usuario){
-                html += '<tr><td>' + usuario.id + '</td><td>' + usuario.nombre + '</td><td>' + usuario.rol + '</td></tr>';
+                const roleIcon = {
+                    'DOCENTE': 'fas fa-chalkboard-teacher text-primary',
+                    'ESTUDIANTE': 'fas fa-graduation-cap text-success',
+                    'EMPLEADO': 'fas fa-briefcase text-info'
+                };
+                html += `<tr>
+                    <td><strong>${usuario.id}</strong></td>
+                    <td><i class="fas fa-user me-1"></i>${usuario.nombre}</td>
+                    <td><i class="${roleIcon[usuario.rol] || 'fas fa-user'} me-1"></i>${usuario.rol}</td>
+                </tr>`;
             });
 
-            html += '</tbody></table>';
+            html += '</tbody></table></div>';
             $('#reporte-contenido').html(html);
         }
 
         function mostrarTablaLibros(data, titulo) {
-            var html = '<h5>' + titulo + '</h5><table class="table"><thead><tr><th>ID</th><th>Título</th><th>Autor</th><th>Disponible</th></tr></thead><tbody>';
+            var html = `<h5 class="text-gradient mb-3">${titulo}</h5>
+                       <div class="table-modern">
+                           <table class="table mb-0">
+                               <thead>
+                                   <tr>
+                                       <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                       <th><i class="fas fa-book me-2"></i>Título</th>
+                                       <th><i class="fas fa-user-edit me-2"></i>Autor</th>
+                                       <th><i class="fas fa-check-circle me-2"></i>Disponible</th>
+                                   </tr>
+                               </thead>
+                               <tbody>`;
 
             data.forEach(function(libro){
-                html += '<tr><td>' + libro.id + '</td><td>' + libro.titulo + '</td><td>' + libro.autor + '</td><td>' + libro.disponible + '</td></tr>';
+                const disponible = libro.disponible ? 
+                    '<span class="badge bg-success"><i class="fas fa-check"></i> Sí</span>' : 
+                    '<span class="badge bg-danger"><i class="fas fa-times"></i> No</span>';
+                html += `<tr>
+                    <td><strong>${libro.id}</strong></td>
+                    <td><i class="fas fa-book me-1"></i>${libro.titulo}</td>
+                    <td><i class="fas fa-user-edit me-1"></i>${libro.autor}</td>
+                    <td>${disponible}</td>
+                </tr>`;
             });
 
-            html += '</tbody></table>';
+            html += '</tbody></table></div>';
             $('#reporte-contenido').html(html);
         }
 
         function mostrarTablaMultas(data, titulo) {
-            var html = '<h5>' + titulo + '</h5><table class="table"><thead><tr><th>ID</th><th>Días Retraso</th><th>Monto</th><th>Préstamo ID</th><th>Usuario</th><th>Libro</th></tr></thead><tbody>';
+            var html = `<h5 class="text-gradient mb-3">${titulo}</h5>
+                       <div class="table-modern">
+                           <table class="table mb-0">
+                               <thead>
+                                   <tr>
+                                       <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                       <th><i class="fas fa-clock me-2"></i>Días Retraso</th>
+                                       <th><i class="fas fa-dollar-sign me-2"></i>Monto</th>
+                                       <th><i class="fas fa-handshake me-2"></i>Préstamo</th>
+                                       <th><i class="fas fa-user me-2"></i>Usuario</th>
+                                       <th><i class="fas fa-book me-2"></i>Libro</th>
+                                   </tr>
+                               </thead>
+                               <tbody>`;
 
             data.forEach(function(multa){
-                html += '<tr><td>' + multa.id + '</td><td>' + multa.diasRetraso + '</td><td>' + multa.monto + '</td>' +
-                        '<td>' + multa.prestamo.id + '</td><td>' + multa.prestamo.usuario.nombre + '</td><td>' + multa.prestamo.libro.titulo + '</td></tr>';
+                html += `<tr>
+                    <td><strong>${multa.id}</strong></td>
+                    <td><span class="badge bg-warning">${multa.diasRetraso} días</span></td>
+                    <td><span class="badge bg-danger">$${multa.monto}</span></td>
+                    <td><strong>#${multa.prestamo.id}</strong></td>
+                    <td><i class="fas fa-user me-1"></i>${multa.prestamo.usuario.nombre}</td>
+                    <td><i class="fas fa-book me-1"></i>${multa.prestamo.libro.titulo}</td>
+                </tr>`;
             });
 
-            html += '</tbody></table>';
+            html += '</tbody></table></div>';
             $('#reporte-contenido').html(html);
         }
 
