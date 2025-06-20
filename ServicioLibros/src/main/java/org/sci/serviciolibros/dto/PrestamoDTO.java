@@ -1,21 +1,16 @@
-package org.sci.serviciolibros.model;
+package org.sci.serviciolibros.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.sci.serviciolibros.model.Libro;
+import org.sci.serviciolibros.model.Usuario;
 import java.time.LocalDate;
 
-public class Prestamo {
+public class PrestamoDTO {
     private Long id;
-
     private Usuario usuario;
-
     private Libro libro;
-
     private LocalDate fechaPrestamo;
     private LocalDate fechaEntrega;
     private LocalDate fechaDevolucion;
-    @JsonManagedReference
-    private Multa multa;
 
     // Getters y setters
     public Long getId() { return id; }
@@ -30,7 +25,5 @@ public class Prestamo {
     public void setFechaEntrega(LocalDate fechaEntrega) { this.fechaEntrega = fechaEntrega; }
     public LocalDate getFechaDevolucion() { return fechaDevolucion; }
     public void setFechaDevolucion(LocalDate fechaDevolucion) { this.fechaDevolucion = fechaDevolucion; }
-    public Multa getMulta() { return multa; }
-    public void setMulta(Multa multa) { this.multa = multa; }
 }
 

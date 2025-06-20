@@ -1,5 +1,6 @@
 package org.sci.serviciolibros.controller;
 
+import org.sci.serviciolibros.dto.MultaConPrestamoDTO;
 import org.sci.serviciolibros.model.Libro;
 import org.sci.serviciolibros.model.Multa;
 import org.sci.serviciolibros.model.Prestamo;
@@ -46,16 +47,30 @@ public class ReporteController {
     }
 
     @GetMapping("/multas")
-    public List<Multa> multas() {
+    public List<MultaConPrestamoDTO> multas() {
         List<Multa> multas = multaRepository.findAll();
-        // Almacenar solo el identificador del préstamo hace que la relación se
-        // pierda al leer desde archivo. Aquí se reconstruye para enviar al
-        // frontend la información completa.
-        multas.forEach(m -> {
-            if (m.getPrestamo() == null && m.getPrestamoId() != null) {
-                prestamoRepository.findById(m.getPrestamoId()).ifPresent(m::setPrestamo);
+        return multas.stream().map(m -> {
+            MultaConPrestamoDTO dto = new MultaConPrestamoDTO();
+            dto.setId(m.getId());
+            dto.setDiasRetraso(m.getDiasRetraso());
+            dto.setMonto(m.getMonto());
+            dto.setPrestamoId(m.getPrestamoId());
+            Prestamo prestamo = m.getPrestamo();
+            if (prestamo == null && m.getPrestamoId() != null) {
+                prestamo = prestamoRepository.findById(m.getPrestamoId()).orElse(null);
             }
-        });
-        return multas;
+            if (prestamo != null) {
+                // Mapear a PrestamoDTO
+                org.sci.serviciolibros.dto.PrestamoDTO prestamoDTO = new org.sci.serviciolibros.dto.PrestamoDTO();
+                prestamoDTO.setId(prestamo.getId());
+                prestamoDTO.setUsuario(prestamo.getUsuario());
+                prestamoDTO.setLibro(prestamo.getLibro());
+                prestamoDTO.setFechaPrestamo(prestamo.getFechaPrestamo());
+                prestamoDTO.setFechaEntrega(prestamo.getFechaEntrega());
+                prestamoDTO.setFechaDevolucion(prestamo.getFechaDevolucion());
+                dto.setPrestamo(prestamoDTO);
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

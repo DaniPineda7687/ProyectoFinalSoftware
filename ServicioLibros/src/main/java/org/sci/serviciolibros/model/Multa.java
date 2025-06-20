@@ -12,7 +12,7 @@ public class Multa {
      * archivo para poder reconstruir la relación cuando se leen las multas.
      */
     private Long prestamoId;
-
+    @JsonBackReference
     private Prestamo prestamo;
 
     // Getters y setters
